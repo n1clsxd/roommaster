@@ -1,5 +1,7 @@
 package com.wise.roommaster.model;
 
+import com.wise.roommaster.dao.CompanyUserDAO;
+
 import java.sql.Time;
 import java.util.List;
 
@@ -9,17 +11,19 @@ public class Meeting {
     private Time startTime;
     private Time endTime;
     private String meetDescription;
-    private CompanyUser booker;
-    private List<CompanyUser> participant;
+    private String booker;
+    private List<String> participants;
+    private CompanyUserDAO companyUserDAO = new CompanyUserDAO();
 
-    public Meeting(String meetName, Room room, Time startTime, Time endTime, String meetDescription, CompanyUser booker, List<CompanyUser> participant) {
+    public Meeting(String meetName, Room room, Time startTime, Time endTime, String meetDescription, String booker, List<String> participants) {
         this.meetName = meetName;
         this.room = room;
         this.startTime = startTime;
         this.endTime = endTime;
         this.meetDescription = meetDescription;
         this.booker = booker;
-        this.participant = participant;
+        this.participants = participants;
+        return new Meeting(meetName,room,startTime,endTime,meetDescription,booker,participants)
     }
 
     public String getMeetName() {
@@ -42,12 +46,12 @@ public class Meeting {
         return meetDescription;
     }
 
-    public CompanyUser getBooker() {
-        return booker;
+    public CompanyUser getBookerByName(String name) {
+        //for(CompanyUser)
     }
 
     public List<CompanyUser> getParticipant() {
-        return participant;
+        //return participants;
     }
 
     public String getRoomName() {

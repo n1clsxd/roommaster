@@ -17,6 +17,7 @@ public class CompanyUser {
         this.role = role;
         this.bookings = bookings;
         this.meetsToParticipate = meetsToParticipate;
+
     }
 
     public String getName() {
