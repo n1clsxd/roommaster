@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MeetingDAO {
+    private final CompanyUserDAO companyUserDAO = new CompanyUserDAO();
 
     public List<Meeting> list() {
         return new ArrayList<>(Arrays.asList(
@@ -16,7 +17,7 @@ public class MeetingDAO {
                         ,new Room("sala a","andar 5",new Time(9,0,0),new Time(20,0,0),10)
                         ,new Time(15,0,0),
                         new Time(17,0,0),
-                        "reuniao ",
+                        "reuniao",
                         null,
                         null
                 ),
