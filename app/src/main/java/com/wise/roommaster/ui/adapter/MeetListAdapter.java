@@ -1,6 +1,7 @@
 package com.wise.roommaster.ui.adapter;
 
 import android.content.Context;
+import android.util.TimeFormatException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +64,7 @@ public class MeetListAdapter extends BaseAdapter {
 
     private void showEndTime(View createdView, Meeting meeting) {
         TextView endTime = createdView.findViewById(R.id.item_meet_time_end);
+
         endTime.setText(meeting.getEndTime().toString());
 
     }

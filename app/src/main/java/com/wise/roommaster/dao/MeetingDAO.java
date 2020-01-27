@@ -6,6 +6,7 @@ import com.wise.roommaster.model.Room;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class MeetingDAO {
@@ -15,7 +16,7 @@ public class MeetingDAO {
         return new ArrayList<>(Arrays.asList(
                 new Meeting("Reuniao dos Main Yasuo"
                         ,"sala x"
-                        ,new Time(15,0,0),
+                        ,new Time(Time.valueOf("13:13:00")),
                         new Time(17,0,0),
                         "reuniao",
                         null,
