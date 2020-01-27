@@ -6,18 +6,18 @@ import java.sql.Time;
 import java.util.List;
 
 public class Meeting {
-    private String meetName;
-    private Room room;
+    private java.lang.String meetName;
+    private String roomName;
     private Time startTime;
     private Time endTime;
-    private String meetDescription;
-    private String booker;
-    private List<String> participants;
+    private java.lang.String meetDescription;
+    private java.lang.String booker;
+    private List<java.lang.String> participants;
     private CompanyUserDAO companyUserDAO = new CompanyUserDAO();
 
-    public Meeting(String meetName, Room room, Time startTime, Time endTime, String meetDescription, String booker, List<String> participants) {
+    public Meeting(String meetName, String room, Time startTime, Time endTime, String meetDescription, String booker, List<String> participants) {
         this.meetName = meetName;
-        this.room = room;
+        this.roomName = room;
         this.startTime = startTime;
         this.endTime = endTime;
         this.meetDescription = meetDescription;
@@ -30,8 +30,8 @@ public class Meeting {
         return meetName;
     }
 
-    public Room getRoom() {
-        return room;
+    public String getRoomName() {
+        return roomName;
     }
 
     public Time getStartTime() {
@@ -48,9 +48,7 @@ public class Meeting {
 
 
 
-    public String getRoomName() {
-        return room.getName();
-    }
+
     public String getBookerName(){
         return booker;
     }

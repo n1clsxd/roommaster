@@ -1,9 +1,6 @@
 package com.wise.roommaster.model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class CompanyUser {
     private int id;
@@ -23,6 +20,10 @@ public class CompanyUser {
         this.bookings = bookings;
         this.meetingsToParticipate = meetingsToParticipate;
 
+
+    }
+    public CompanyUser CompanyUser(int id, String name, String login, String password, String role, ArrayList<Meeting> bookings, ArrayList<Meeting> meetingsToParticipate){
+        return new CompanyUser(id,name,login,password,role,bookings,meetingsToParticipate);
     }
     public int getId(){
         return id;

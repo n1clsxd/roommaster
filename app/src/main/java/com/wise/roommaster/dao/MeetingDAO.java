@@ -14,7 +14,7 @@ public class MeetingDAO {
     public List<Meeting> list() {
         return new ArrayList<>(Arrays.asList(
                 new Meeting("Reuniao dos Main Yasuo"
-                        ,new Room("sala a","andar 5",new Time(9,0,0),new Time(20,0,0),10)
+                        ,"sala x"
                         ,new Time(15,0,0),
                         new Time(17,0,0),
                         "reuniao",

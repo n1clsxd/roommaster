@@ -7,12 +7,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.wise.roommaster.MainActivity;
 import com.wise.roommaster.R;
 import com.wise.roommaster.model.Meeting;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 public class MeetListAdapter extends BaseAdapter {
     private List<Meeting> meetings;
@@ -60,23 +58,23 @@ public class MeetListAdapter extends BaseAdapter {
 
     private void showBookerName(View createdView, Meeting meeting) {
         TextView bookerName = createdView.findViewById(R.id.item_meet_booker);
-        bookerName.setText(meeting.getBooker().getName());
+        //bookerName.setText(meeting.getBooker().getName());
     }
 
     private void showEndTime(View createdView, Meeting meeting) {
         TextView endTime = createdView.findViewById(R.id.item_meet_time_end);
-        endTime.setText((CharSequence) meeting.getEndTime());
+        endTime.setText(meeting.getEndTime().toString());
 
     }
 
     private void showStartTime(View createdView, Meeting meeting) {
         TextView startTime = createdView.findViewById(R.id.item_meet_time_start);
-        startTime.setText((CharSequence) meeting.getStartTime());
+        startTime.setText(meeting.getStartTime().toString());
     }
 
     private void showMeetRoomName(View createdView, Meeting meeting) {
         TextView meetRoomName = createdView.findViewById(R.id.item_meet_room_name);
-        meetRoomName.setText(meeting.getRoom().getName());
+        meetRoomName.setText(meeting.getRoomName());
     }
 
     private void showMeetName(View createdView, Meeting meeting) {
