@@ -23,7 +23,7 @@ public class Meeting {
         this.meetDescription = meetDescription;
         this.booker = booker;
         this.participants = participants;
-        return new Meeting(meetName,room,startTime,endTime,meetDescription,booker,participants)
+
     }
 
     public String getMeetName() {
@@ -46,19 +46,13 @@ public class Meeting {
         return meetDescription;
     }
 
-    public CompanyUser getBookerByName(String name) {
-        //for(CompanyUser)
-    }
 
-    public List<CompanyUser> getParticipant() {
-        //return participants;
-    }
 
     public String getRoomName() {
         return room.getName();
     }
     public String getBookerName(){
-        return booker.getName();
+        return booker;
     }
 
 
