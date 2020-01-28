@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.activity.MainActivity">
 
     <ImageView
         android:id="@+id/start_logo_image"
@@ -39,7 +39,7 @@
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_marginTop="50dp"
-        android:autofillHints="usuario@empresa.com"
+
         android:ems="10"
         android:hint="usuario@empresa.com"
         android:inputType="textEmailAddress"
@@ -53,7 +53,7 @@
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
-        android:autofillHints="Senha do Usuário"
+
         android:ems="10"
         android:hint="Senha do Usuário"
         android:inputType="textPassword"

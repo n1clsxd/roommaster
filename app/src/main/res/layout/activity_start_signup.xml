@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/start_password_field2"
+        android:id="@+id/signup_password_field1"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_marginTop="40dp"
@@ -33,10 +33,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_email_field2" />
+        app:layout_constraintTop_toBottomOf="@+id/signup_email_field" />
 
     <EditText
-        android:id="@+id/start_password_field3"
+        android:id="@+id/signup_password_field2"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_marginTop="40dp"
@@ -47,10 +47,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_password_field2" />
+        app:layout_constraintTop_toBottomOf="@+id/signup_password_field1" />
 
     <EditText
-        android:id="@+id/start_email_field2"
+        android:id="@+id/signup_email_field"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_marginTop="40dp"
@@ -67,10 +67,10 @@
         android:id="@+id/button3"
         android:layout_width="167dp"
         android:layout_height="59dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="120dp"
         android:text="Entrar"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_password_field3" />
+        app:layout_constraintTop_toBottomOf="@+id/signup_password_field1" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,7 +16,7 @@ public class MeetingDAO {
         return new ArrayList<>(Arrays.asList(
                 new Meeting("Reuniao dos Main Yasuo"
                         ,"sala x"
-                        ,new Time(Time.valueOf("13:13:00")),
+                        ,new Time(0,0,0),
                         new Time(17,0,0),
                         "reuniao",
                         null,
