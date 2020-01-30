@@ -1,10 +1,7 @@
 package com.wise.roommaster.ui.activity;
 
 import android.content.Intent;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.text.format.Formatter;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
@@ -15,16 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.wise.roommaster.R;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import com.wise.roommaster.service.CheckDomainService;
+import com.wise.roommaster.service.SignupService;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -43,21 +32,22 @@ public class SignupActivity extends AppCompatActivity {
         SignupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String name, password, email;
                 name = nameEdt.getText().toString();
                 email = emailEdt.getText().toString();
                 password = passwordEdt.getText().toString();
 
-
-
-
-
                 try {
-                    String result = makeAuthRequest(name, email, password);
+                    String result = new SignupService(email,name,password).execute().get();
+                    //System.out.println(new LoginService(email,password).execute().get());
+                    System.out.println("Resultado" + result);
                     if(result.equals("Usuário criado com sucesso")){
-                        startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+
+                        startActivity(new Intent(SignupActivity.this, MainActivity.class));
+                        MainActivity.isLogged = true;
                     }else{
-                        if(name.equals(null)||email.equals(null)||password.equals(null))
+                        if(name.equals("")||email.equals("")||password.equals(""))
                         Toast.makeText(SignupActivity.this, "Os campos não foram preenchidos corretamente.", Toast.LENGTH_SHORT).show();
 
                     }
@@ -65,60 +55,38 @@ public class SignupActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-
-
-
             }
         });
+        emailEdt.setOnFocusChangeListener((new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    String emailAfterTextChange = emailEdt.getText().toString();
+                    if(emailAfterTextChange.contains("@")){
+                        String[] emailFull = emailAfterTextChange.split("@");
+                        if(emailFull.length > 1){
+                            String domain = emailFull[1];
+                            if(domain.contains(".")){
+                                System.out.println("dominio: " + domain);
+                                try{
+                                    String resulte = new CheckDomainService(domain).execute().get();
+                                    System.out.println(resulte);
+                                    
+                                }catch(Exception e){
+                                    e.printStackTrace();
+                                }
+
+                                //do stuff -> check domain
+                                //         -> check companyId
+                            }else{
+                                Toast.makeText(SignupActivity.this, "O @ está incompleto!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                }
+            }
+        }));
 
     }
 
-
-    public static String makeAuthRequest(String name, String email, String password) throws Exception {
-
-
-        String urlWS = "http://172.30.248.126:8080/ReservaDeSala/rest/usuario/cadastro";
-        String authorizationHeader = "secret";
-        JSONObject userJson = new JSONObject();
-        try{
-            userJson.put("email", email);
-            userJson.put("nome", name);
-            userJson.put("senha", password);
-            userJson.put("idOrganizacao", 1);
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        String userEncoded = Base64.encodeToString(userJson.toString().getBytes(), Base64.NO_WRAP);
-        System.out.println(userJson.toString());
-
-
-        try {
-            StringBuilder result = new StringBuilder();
-            URL url = new URL(urlWS);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-
-            conn.setRequestProperty("authorization", authorizationHeader);
-            conn.setRequestProperty("novoUsuario", userEncoded);
-            conn.setDoOutput(true);
-
-            System.out.println(result.toString());
-
-
-
-
-            int responseCode = conn.getResponseCode();
-            System.out.println(responseCode);
-            System.out.println(userEncoded);
-            System.out.println(LoginActivity.makeAuthRequest(email,password));
-            System.out.println(result);
-            return result.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-
-        }
-    }
 }

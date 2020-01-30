@@ -65,7 +65,7 @@
         android:layout_width="167dp"
         android:layout_height="59dp"
         android:layout_marginTop="64dp"
-        android:text="Entrar"
+        android:text="Cadastrar"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
