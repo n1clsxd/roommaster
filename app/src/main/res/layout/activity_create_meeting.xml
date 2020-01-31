@@ -26,8 +26,8 @@
         android:ems="10"
         android:hint="Descrição"
         android:inputType="textPersonName"
-        tools:layout_editor_absoluteX="48dp"
-        tools:layout_editor_absoluteY="403dp" />
+        tools:layout_editor_absoluteX="64dp"
+        tools:layout_editor_absoluteY="327dp" />
 
     <Button
         android:id="@+id/button"

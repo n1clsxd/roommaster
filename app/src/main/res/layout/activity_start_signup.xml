@@ -11,13 +11,12 @@
         android:layout_width="246dp"
         android:layout_height="57dp"
         android:layout_marginTop="92dp"
+        android:gravity="center"
         android:text="Novo Usuário"
         android:textColor="#37659D"
         android:textSize="30sp"
         android:textStyle="bold"
-        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -51,12 +50,11 @@
         android:layout_width="250dp"
         android:layout_height="50dp"
 
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="28dp"
         android:ems="10"
         android:hint="usuario@empresa.com"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signup_username_field" />
 
@@ -64,10 +62,25 @@
         android:id="@+id/signup_signup_button"
         android:layout_width="167dp"
         android:layout_height="59dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:text="Cadastrar"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signup_password_field1" />
+        app:layout_constraintTop_toBottomOf="@+id/signup_password_field1"
+        app:layout_constraintVertical_bias="0.826" />
+
+    <Spinner
+        android:id="@+id/companySpinner"
+        android:layout_width="144dp"
+        android:layout_height="29dp"
+        android:layout_marginTop="20dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/signup_signup_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signup_password_field1"
+        app:layout_constraintVertical_bias="0.285" />
 </androidx.constraintlayout.widget.ConstraintLayout>

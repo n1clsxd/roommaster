@@ -14,14 +14,16 @@ public class SignupService extends AsyncTask <Void, Void, String> {
     private String name;
     private String email;
     private String password;
+    private int companyId;
 
 
 
-    public SignupService(String name, String email, String password) {
+    public SignupService(String name, String email, String password, int companyId) {
 
         this.name = name;
         this.email = email;
         this.password = password;
+        this.companyId = companyId;
     }
 
 
@@ -38,7 +40,7 @@ public class SignupService extends AsyncTask <Void, Void, String> {
             userJson.put("email", email);
             userJson.put("nome", name);
             userJson.put("senha", password);
-            userJson.put("idOrganizacao", 1);
+            userJson.put("idOrganizacao", companyId);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -48,7 +50,7 @@ public class SignupService extends AsyncTask <Void, Void, String> {
         System.out.println(userJson.toString());
 
         try {
-            StringBuilder result = new StringBuilder();
+
             URL url = new URL(urlWS);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
@@ -56,7 +58,14 @@ public class SignupService extends AsyncTask <Void, Void, String> {
             conn.setRequestProperty("authorization", authorizationHeader);
             conn.setRequestProperty("novoUsuario", userEncoded);
             conn.setDoOutput(true);
+            StringBuilder result = new StringBuilder();
+            BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line;
+            while ((line = rd.readLine()) != null) {
 
+                result.append(line);
+            }
+            rd.close();
             System.out.println(result.toString());
 
             int responseCode = conn.getResponseCode();
@@ -74,41 +83,5 @@ public class SignupService extends AsyncTask <Void, Void, String> {
         }
     }
 
-    public JSONArray CompanyJsonRequest(String domain) throws Exception{
-        String urlWS = "http://172.30.248.126:8080/ReservaDeSala/rest/organizacao/organizacaoByDominio";
-        String authorizationHeader = "secret";
-        String contentType = "application/json";
-        System.out.println("SERA QUE O DOMINIO APARECE AQUI: "+ domain);
 
-        try {
-            StringBuilder result = new StringBuilder();
-            URL url = new URL(urlWS);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-
-            conn.setRequestProperty("authorization", authorizationHeader);
-
-            conn.setRequestProperty("dominio", domain);
-            System.out.println("tentando dar GET usando o dominio: "+ domain);
-
-            BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line;
-            while ((line = rd.readLine()) != null) {
-
-                result.append(line);
-            }
-            rd.close();
-            JSONArray resultJson = new JSONArray(result.toString());
-            int idCompany = resultJson.getJSONObject(0).getInt("id");
-            System.out.println("BufferedReader: " + rd);
-            System.out.println("id da empresa: " + idCompany);
-
-            return resultJson;
-        } catch (Exception e) {
-            System.out.println("algo deu errado");
-            e.printStackTrace();
-            return null;
-
-        }
-    }
 }

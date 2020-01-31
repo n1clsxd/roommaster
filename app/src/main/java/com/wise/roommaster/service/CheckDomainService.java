@@ -9,6 +9,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class CheckDomainService extends AsyncTask <Void, Void, String> {
 
@@ -48,10 +51,11 @@ public class CheckDomainService extends AsyncTask <Void, Void, String> {
             }
             rd.close();
 
-            //JSONArray resultJson = new JSONArray(result.toString());
 
+            JSONArray resultJson = new JSONArray(result.toString());
 
-            return result.toString();
+            return resultJson.toString();
+
         } catch (Exception e) {
             System.out.println("algo deu errado");
             System.out.println(e);

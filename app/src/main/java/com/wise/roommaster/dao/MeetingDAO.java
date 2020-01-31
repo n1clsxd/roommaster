@@ -14,7 +14,7 @@ public class MeetingDAO {
 
     public List<Meeting> list() {
         return new ArrayList<>(Arrays.asList(
-                new Meeting("Reuniao dos Main Yasuo"
+                new Meeting("Reuniao de"
                         ,"sala x"
                         ,new Time(0,0,0),
                         new Time(17,0,0),
@@ -22,7 +22,7 @@ public class MeetingDAO {
                         null,
                         null
                 ),
-                new Meeting("Reuniao dos Main Sylas",null,new Time(17,5,0),new Time(23,0,0),"reuniaooooooooo",null,null)
+                new Meeting("Reuniao de",null,new Time(17,5,0),new Time(23,0,0),"reuniaooooooooo",null,null)
         ));
     }
 }
