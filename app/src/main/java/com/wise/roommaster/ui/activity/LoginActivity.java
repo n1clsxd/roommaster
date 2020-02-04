@@ -1,6 +1,7 @@
 package com.wise.roommaster.ui.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.wise.roommaster.R;
 import com.wise.roommaster.service.LoginService;
 
 public class LoginActivity extends AppCompatActivity {
+    private String emailToSave;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +43,9 @@ public class LoginActivity extends AppCompatActivity {
 
                     String result = new LoginService(emailStr,passwordStr).execute().get();
                     if(result.equals("Login efetuado com sucesso!")){
+                        emailToSave = emailStr;
                         ActiveLogin();
+                        Toast.makeText(LoginActivity.this, result, Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(LoginActivity.this, result, Toast.LENGTH_SHORT).show();
                     }
@@ -66,8 +70,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void ActiveLogin() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
+        //editor.putBoolean("isLogged",MainActivity.isLogged);
+        editor.putString("userEmail",emailToSave);
+        editor.commit();
+        System.out.println(pref.getString("userEmail",null));
+        Toast.makeText(this, "Usuario ja logado: "+ (pref.getString("userEmail",null)), Toast.LENGTH_SHORT).show();
+
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
-        MainActivity.isLogged = true;
+        //MainActivity.isLogged = true;
     }
 
 }

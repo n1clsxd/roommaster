@@ -135,7 +135,7 @@ public class SignupActivity extends AppCompatActivity {
                         Toast.makeText(SignupActivity.this, "Cadastro efetuado!", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(SignupActivity.this, MainActivity.class));
 
-                        MainActivity.isLogged = true;
+                        //MainActivity.isLogged = true;
                     }else{
                         Toast.makeText(SignupActivity.this, result, Toast.LENGTH_SHORT).show();
                     }
