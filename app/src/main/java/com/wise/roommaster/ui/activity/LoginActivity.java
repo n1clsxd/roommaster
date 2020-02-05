@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
         //editor.putBoolean("isLogged",MainActivity.isLogged);
         editor.putString("userEmail",emailToSave);
         editor.commit();
-        System.out.println(pref.getString("userEmail",null));
+        System.out.println("Usuario ja logado: "+ pref.getString("userEmail",null));
         Toast.makeText(this, "Usuario ja logado: "+ (pref.getString("userEmail",null)), Toast.LENGTH_SHORT).show();
 
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
