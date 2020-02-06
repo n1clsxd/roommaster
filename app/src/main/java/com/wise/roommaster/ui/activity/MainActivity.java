@@ -25,16 +25,18 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
    //public static boolean isLogged = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         final SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         final SharedPreferences.Editor editor = pref.edit();
+        super.onCreate(savedInstanceState);
 
 
-        String emailLogged = null;
+
+        String emailLogged = "";
         try{
-            emailLogged = pref.getString("userEmail",null);
+            emailLogged = pref.getString("userEmail", null);
 
             System.out.println(emailLogged);
 
@@ -50,11 +52,9 @@ public class MainActivity extends AppCompatActivity {
             logoutTesteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-
-                    pref.getString("userEmail",null);
-
                     editor.remove("userEmail");
+                    editor.remove("userName");
+                    editor.remove("companyId");
                     editor.commit();
                     System.out.println(pref.getString("userEmail",null));
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
@@ -65,21 +65,8 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     setContentView(R.layout.activity_create_meeting_room_list);
-                    try{
-                        String roomResult = new GetRoomListService(1).execute().get();
-                        System.out.println("Resultado: " + roomResult);
-                        JSONArray roomResultJson = new JSONArray(roomResult);
-                        configRoomList();
-                        for(int i =0; i < roomResultJson.length(); i++){
-                            roomResultJson.getJSONObject(i).remove("idOrganizacao");
-                        }
-                        System.out.println(roomResultJson);
 
-                    }catch (Exception e){
-                        e.printStackTrace();
-                        System.out.println("Resultado: null");
-
-                    }
+                    configRoomList();
 
                 }
             });
@@ -103,10 +90,11 @@ public class MainActivity extends AppCompatActivity {
     }
     private void configRoomList(){
         ListView roomList = findViewById(R.id.list_room_listview);
+        RoomDAO roomDAO = new RoomDAO();
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        roomDAO.updateRoomList(pref.getInt("companyId",0));
         List<Room> rooms = new RoomDAO().roomList();
-        rooms.add(new Room("sala teste","andar 2",20,20.0f,true,false));
-        rooms.add(new Room("sala teste2","andar 3",26,28.0f,true,true));
-        rooms.add(new Room("sala teste3","andar 2",20,29.0f,false,false));
+
 
         roomList.setAdapter(new RoomListAdapter(rooms, this));
     }

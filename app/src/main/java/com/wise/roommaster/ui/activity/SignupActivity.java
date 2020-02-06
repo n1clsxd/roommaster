@@ -28,7 +28,7 @@ import java.util.List;
 public class SignupActivity extends AppCompatActivity {
     List<Company> companyList = new ArrayList<>();
     List<String> companyNameList= new ArrayList<>();
-    int selectCompanyId;
+    int selectCompanyId = 1;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -48,6 +48,7 @@ public class SignupActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
         emailEdt.setOnFocusChangeListener((new View.OnFocusChangeListener() {
@@ -59,6 +60,7 @@ public class SignupActivity extends AppCompatActivity {
                         String[] emailFull = emailAfterTextChange.split("@");
                         if(emailFull.length > 1){
                             String domain = emailFull[1];
+
                             if(domain.contains(".")){
                                 System.out.println("dominio: " + domain);
                                 try{
@@ -78,6 +80,7 @@ public class SignupActivity extends AppCompatActivity {
                                                 String name = obj.getString("nome");
                                                 String type = obj.getString("tipoOrganizacao");
                                                 Company company = new Company();
+                                                System.out.println(companyId[i]);
                                                 company.setId(id);
                                                 company.setName(name);
                                                 company.setCompanyType(type);
@@ -104,6 +107,7 @@ public class SignupActivity extends AppCompatActivity {
 
                                 //do stuff -> check domain
                                 //         -> check companyId
+
                             }else{
                                 Toast.makeText(SignupActivity.this, "O @ está incompleto!", Toast.LENGTH_SHORT).show();
                             }

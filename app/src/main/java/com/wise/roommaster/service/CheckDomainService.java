@@ -42,12 +42,12 @@ public class CheckDomainService extends AsyncTask <Void, Void, String> {
             System.out.println(conn.getResponseCode());
 
             BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            System.out.println("bufferedReader ok");
+
             String line;
             while ((line = rd.readLine()) != null) {
 
                 result.append(line);
-                System.out.println("append ok");
+
             }
             rd.close();
 

@@ -47,7 +47,6 @@ public class SignupService extends AsyncTask <Void, Void, String> {
         }
 
         String userEncoded = Base64.encodeToString(userJson.toString().getBytes(), Base64.NO_WRAP);
-        System.out.println(userJson.toString());
 
         try {
 

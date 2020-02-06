@@ -61,12 +61,12 @@ public class RoomListAdapter extends BaseAdapter {
     }
     private void showSeats(View createdView, Room room) {
         TextView roomSeats = createdView.findViewById(R.id.item_room_seats);
-        roomSeats.setText(Integer.toString(room.getSeats()));
+        roomSeats.setText(room.getSeats() + " assentos");
     }
 
     private void showArea(View createdView, Room room) {
         TextView roomArea = createdView.findViewById(R.id.item_room_size);
-        roomArea.setText(Float.toString(room.getArea()));
+        roomArea.setText(room.getArea() + " m²");
     }
     private void showHasMedia(View createdView, Room room) {
         ImageView roomHasMedia = createdView.findViewById(R.id.item_room_media);

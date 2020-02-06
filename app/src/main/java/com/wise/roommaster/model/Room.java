@@ -10,7 +10,7 @@ public class Room {
     private String name;
     private String floor;
     private int seats;
-    private float area;
+    private double area;
     private boolean hasMedia;
     private boolean hasAir;
 
@@ -22,7 +22,7 @@ public class Room {
         this.hasMedia = false;
         this.hasAir = false;
     }
-    public Room(String name, String floor, int seats, float area, boolean hasMedia, boolean hasAir) {
+    public Room(String name, String floor, int seats, double area, boolean hasMedia, boolean hasAir) {
         this.name = name;
         this.floor = floor;
         this.seats = seats;
@@ -71,11 +71,11 @@ public class Room {
         this.seats = seats;
     }
 
-    public float getArea() {
+    public double getArea() {
         return area;
     }
 
-    public void setArea(float area) {
+    public void setArea(double area) {
         this.area = area;
     }
 

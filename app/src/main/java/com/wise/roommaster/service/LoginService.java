@@ -18,7 +18,7 @@ public class LoginService extends AsyncTask<Void, Void, String> {
     @Override
     protected String doInBackground(Void... voids) {
 
-        String urlWS = "http://172.30.248.126:8080/ReservaDeSala/rest/usuario/login";
+        String urlWS = "http://172.30.248.126:8080/ReservaDeSala/rest/usuario/loginV2";
         String authorizationHeader = "secret";
 
 
