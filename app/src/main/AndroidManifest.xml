@@ -13,10 +13,11 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ui.activity.LoginActivity"/>
         <activity android:name=".ui.activity.SignupActivity"/>
-
+        <activity android:name=".ui.activity.CreateMeetingActivity"/>
 
 
         <activity android:name=".ui.activity.MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

@@ -9,6 +9,7 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.wise.roommaster.R;
 import com.wise.roommaster.dao.MeetingDAO;
 import com.wise.roommaster.dao.RoomDAO;
@@ -68,6 +69,13 @@ public class MainActivity extends AppCompatActivity {
 
                     configRoomList();
 
+                }
+            });
+            final FloatingActionButton newMeetingBtn = findViewById(R.id.create_meeting_button);
+            newMeetingBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(MainActivity.this, CreateMeetingActivity.class));
                 }
             });
         }else{
