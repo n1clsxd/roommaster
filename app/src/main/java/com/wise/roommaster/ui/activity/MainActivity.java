@@ -65,7 +65,9 @@ public class MainActivity extends AppCompatActivity {
             roomTesteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    setContentView(R.layout.activity_create_meeting_room_list);
+                    setContentView(R.layout.activity_create_meeting);
+                    findViewById(R.id.create_meeting_main).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.create_meeting_room_list).setVisibility(View.VISIBLE);
 
                     configRoomList();
 
