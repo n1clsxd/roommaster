@@ -45,7 +45,7 @@ public class SignupService extends AsyncTask <Void, Void, String> {
         }catch (Exception e){
             e.printStackTrace();
         }
-
+        System.out.println(userJson);
         String userEncoded = Base64.encodeToString(userJson.toString().getBytes(), Base64.NO_WRAP);
 
         try {

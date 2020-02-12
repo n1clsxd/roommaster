@@ -1,57 +1,77 @@
 package com.wise.roommaster.model;
 
-import com.wise.roommaster.dao.CompanyUserDAO;
-
-import java.sql.Time;
-import java.util.List;
+import java.util.Date;
 
 public class Meeting {
-    private java.lang.String meetName;
-    private String roomName;
-    private Time startTime;
-    private Time endTime;
-    private java.lang.String meetDescription;
-    private java.lang.String booker;
-    private List<java.lang.String> participants;
-    private CompanyUserDAO companyUserDAO = new CompanyUserDAO();
-
-    public Meeting(String meetName, String room, Time startTime, Time endTime, String meetDescription, String booker, List<String> participants) {
+    private int id;
+    private int roomId;
+    private int ownerUserId;
+    private String meetName; // por enquanto descricao
+    private Date startDateTime;
+    private Date endDateTime;
+    //private String meetDescription;
+    public Meeting(int id, int roomId, int ownerUserId, String meetName, Date startDateTime, Date endDateTime) {
+        this.id = id;
+        this.roomId = roomId;
+        this.ownerUserId = ownerUserId;
         this.meetName = meetName;
-        this.roomName = room;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.meetDescription = meetDescription;
-        this.booker = booker;
-        this.participants = participants;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+    }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
+    }
+    public String getRoomName(){
+        String name = "";
+
+        return name;
+    }
+
+    public int getOwnerUserId() {
+        return ownerUserId;
+    }
+
+    public void setOwnerUserId(int ownerUserId) {
+        this.ownerUserId = ownerUserId;
     }
 
     public String getMeetName() {
         return meetName;
     }
 
-    public String getRoomName() {
-        return roomName;
+    public void setMeetName(String meetName) {
+        this.meetName = meetName;
     }
 
-    public Time getStartTime() {
-        return startTime;
+    public Date getStartDateTime() {
+        return startDateTime;
     }
 
-    public Time getEndTime() {
-        return endTime;
+    public void setStartDateTime(Date startDateTime) {
+        this.startDateTime = startDateTime;
     }
 
-    public String getMeetDescription() {
-        return meetDescription;
+    public Date getEndDateTime() {
+        return endDateTime;
     }
 
-
-
-
-    public String getBookerName(){
-        return booker;
+    public void setEndDateTime(Date endDateTime) {
+        this.endDateTime = endDateTime;
     }
-
-
 }
+
+
+

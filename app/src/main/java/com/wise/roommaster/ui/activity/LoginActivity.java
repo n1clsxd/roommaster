@@ -76,12 +76,14 @@ public class LoginActivity extends AppCompatActivity {
         String email = "";
         String name = "";
         int companyId = 0;
+        int userId = 0;
 
         try {
             JSONObject userJSON = new JSONObject(result);
             if(userJSON.has("email")&&userJSON.has("nome")&&userJSON.has("idOrganizacao")){
                 email = userJSON.getString("email");
                 name = userJSON.getString("nome");
+                userId = userJSON.getInt("id");
                 JSONObject companyJSON = userJSON.getJSONObject("idOrganizacao");
                 companyId = companyJSON.getInt("id");
 
@@ -97,8 +99,10 @@ public class LoginActivity extends AppCompatActivity {
         editor.putString("userEmail",email);
         editor.putString("userNome", name);
         editor.putInt("companyId", companyId);
+        editor.putInt("userId",userId);
         editor.commit();
         System.out.println("Usuario ja logado: "+ pref.getString("userEmail",null));
+        System.out.println("id logado:" + pref.getInt("userId", -1));
         Toast.makeText(this, "Usuario ja logado: "+ (pref.getString("userEmail",null)), Toast.LENGTH_SHORT).show();
 
         startActivity(new Intent(LoginActivity.this, MainActivity.class));

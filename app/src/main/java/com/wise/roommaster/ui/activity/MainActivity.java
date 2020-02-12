@@ -15,11 +15,8 @@ import com.wise.roommaster.dao.MeetingDAO;
 import com.wise.roommaster.dao.RoomDAO;
 import com.wise.roommaster.model.Meeting;
 import com.wise.roommaster.model.Room;
-import com.wise.roommaster.service.GetRoomListService;
 import com.wise.roommaster.ui.adapter.MeetListAdapter;
 import com.wise.roommaster.ui.adapter.RoomListAdapter;
-
-import org.json.JSONArray;
 
 import java.util.List;
 
@@ -29,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         final SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         final SharedPreferences.Editor editor = pref.edit();
         super.onCreate(savedInstanceState);
@@ -86,12 +84,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-
-
     }
 
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+        super.onBackPressed();
+    }
 
     private void configMeetList() {
         ListView meetList = findViewById(R.id.list_meet_listview);

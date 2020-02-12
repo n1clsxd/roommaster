@@ -65,13 +65,13 @@ public class MeetListAdapter extends BaseAdapter {
     private void showEndTime(View createdView, Meeting meeting) {
         TextView endTime = createdView.findViewById(R.id.item_meet_time_end);
 
-        endTime.setText(meeting.getEndTime().toString());
+        endTime.setText(meeting.getEndDateTime().toString());
 
     }
 
     private void showStartTime(View createdView, Meeting meeting) {
         TextView startTime = createdView.findViewById(R.id.item_meet_time_start);
-        startTime.setText(meeting.getStartTime().toString());
+        startTime.setText(meeting.getStartDateTime().toString());
     }
 
     private void showMeetRoomName(View createdView, Meeting meeting) {

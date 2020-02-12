@@ -10,10 +10,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class GetRoomListService extends AsyncTask<Void, Void, String> {
-    private String companyId;
+    private int companyId;
+    private int roomId; //sera userId no futuro
 
     public GetRoomListService(int companyId){
-        this.companyId = Integer.toString(companyId);
+        //this.companyId = Integer.toString(companyId);
+        this.companyId = companyId;
+    }
+    public GetRoomListService(int companyId, int roomId){
+        this.companyId = companyId;
+        this.roomId = roomId;
     }
 
     @Override
@@ -21,6 +27,7 @@ public class GetRoomListService extends AsyncTask<Void, Void, String> {
         String urlWS = "http://172.30.248.126:8080/ReservaDeSala/rest/sala/salas";
         String authorizarionHeader = "secret";
         String contentType = "application/json";
+        String companyId = Integer.toString(this.companyId);
 
         try{
             StringBuilder result = new StringBuilder();

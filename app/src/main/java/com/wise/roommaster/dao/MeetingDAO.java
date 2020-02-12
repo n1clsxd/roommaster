@@ -10,19 +10,14 @@ import java.util.Date;
 import java.util.List;
 
 public class MeetingDAO {
-    private final CompanyUserDAO companyUserDAO = new CompanyUserDAO();
+    //private final CompanyUserDAO companyUserDAO = new CompanyUserDAO();
 
     public List<Meeting> list() {
-        return new ArrayList<>(Arrays.asList(
-                new Meeting("Reuniao de"
-                        ,"sala x"
-                        ,new Time(0,0,0),
-                        new Time(17,0,0),
-                        "reuniao",
-                        null,
-                        null
-                ),
-                new Meeting("Reuniao de",null,new Time(17,5,0),new Time(23,0,0),"reuniaooooooooo",null,null)
-        ));
+        return new ArrayList<>(
+            Arrays.asList(
+                new Meeting(1,1,1,"Reuniao de",null,null),
+                new Meeting(1,1,1,"Reuniao de",null,null)
+            )
+        );
     }
 }

@@ -1,9 +1,8 @@
 package com.wise.roommaster.ui.activity;
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -11,6 +10,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,9 +19,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.wise.roommaster.R;
 import com.wise.roommaster.dao.RoomDAO;
 import com.wise.roommaster.model.Room;
+import com.wise.roommaster.service.CreateMeetingService;
 import com.wise.roommaster.ui.adapter.RoomListAdapter;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class CreateMeetingActivity extends AppCompatActivity {
     static FrameLayout cm_layout;
@@ -29,11 +33,16 @@ public class CreateMeetingActivity extends AppCompatActivity {
     ConstraintLayout cm_room_list;
     ConstraintLayout cm_calendar;
     //Context context;
-    ListView roomListView;
+    TextView nameField;
+    TextView descriptionField;
     Button selectRoomBtn;
+        ListView roomListView;
+
     Button selectDateBtn;
-    Button confirmDateBtn;
-    CalendarView calendarView;
+        CalendarView calendarView;
+        Button confirmDateBtn;
+
+    Button confirmMeetingBtn;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,12 +55,14 @@ public class CreateMeetingActivity extends AppCompatActivity {
         cm_calendar = findViewById(R.id.create_meeting_calendar);
 
         setViewAuto(cm_layout, cm_main);
+        nameField = findViewById(R.id.create_meeting_name_field);
+        descriptionField = findViewById(R.id.create_meeting_description_field);
 
         selectRoomBtn = findViewById(R.id.create_meeting_select_room_button);
 
         selectDateBtn = findViewById(R.id.create_meeting_select_date_button);
             calendarView = findViewById(R.id.create_meeting_calendar_view);
-            confirmDateBtn = findViewById(R.id.create_meeting_confirm_button);
+            confirmDateBtn = findViewById(R.id.create_meeting_calendar_confirm);
 
 
         selectRoomBtn.setOnClickListener(new View.OnClickListener() {
@@ -66,20 +77,39 @@ public class CreateMeetingActivity extends AppCompatActivity {
                 configDate();
             }
         });
+        confirmMeetingBtn = findViewById(R.id.create_meeting_confirm);
+        confirmMeetingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+                Date dateTeste;
+                dateTeste = Calendar.getInstance().getTime();
+                String result = null;
+                try {
+
+                    result = new CreateMeetingService(1,pref.getInt("userId",-1),"teste",dateTeste,dateTeste).execute().get();
+                } catch (Exception e) {
+                    System.out.println("deu esse erro: " + e);
+                    e.printStackTrace();
+                }
+                System.out.println(result);
+            }
+        });
     }
 
     @Override
     public void onBackPressed() {
-        moveTaskToBack(false);
-        if(cm_room_list.getVisibility() == View.VISIBLE){
+        if(cm_main.getVisibility() == View.VISIBLE){
+            finish();
+
+
+        }else{
+            moveTaskToBack(false);
 
             setViewAuto(cm_layout, cm_main);
-
-        }else
-        if(cm_main.getVisibility() == View.VISIBLE){
-            startActivity(new Intent(CreateMeetingActivity.this, MainActivity.class));
         }
     }
+
     public void setViewAuto(FrameLayout frameLayout, ViewGroup viewGroup){
         for(int i = 0; i < frameLayout.getChildCount(); i++){
             if( frameLayout.getChildAt(i) == viewGroup){
