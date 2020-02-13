@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                     findViewById(R.id.create_meeting_main).setVisibility(View.INVISIBLE);
                     findViewById(R.id.create_meeting_room_list).setVisibility(View.VISIBLE);
 
-                    configRoomList();
+                    //configRoomList();
 
                 }
             });
@@ -95,7 +95,8 @@ public class MainActivity extends AppCompatActivity {
     private void configMeetList() {
         ListView meetList = findViewById(R.id.list_meet_listview);
         List<Meeting> meetings = new MeetingDAO().list();
-        meetList.setAdapter(new MeetListAdapter(meetings, this));
+        final SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        meetList.setAdapter(new MeetListAdapter(meetings, this, pref.getInt("companyId",0)));
     }
     private void configRoomList(){
         ListView roomList = findViewById(R.id.list_room_listview);

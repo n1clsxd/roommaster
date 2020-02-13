@@ -1,6 +1,7 @@
 package com.wise.roommaster.ui.adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.TimeFormatException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +17,13 @@ import java.util.List;
 public class MeetListAdapter extends BaseAdapter {
     private List<Meeting> meetings;
     private Context context;
-    public MeetListAdapter(List<Meeting> meetings, Context context) {
+    private int companyId;
+
+
+    public MeetListAdapter(List<Meeting> meetings, Context context, int companyId) {
         this.meetings = meetings;
         this.context = context;
+        this.companyId = companyId;
     }
 
     @Override
@@ -76,7 +81,7 @@ public class MeetListAdapter extends BaseAdapter {
 
     private void showMeetRoomName(View createdView, Meeting meeting) {
         TextView meetRoomName = createdView.findViewById(R.id.item_meet_room_name);
-        meetRoomName.setText(meeting.getRoomName());
+        meetRoomName.setText(meeting.getRoomName(this.companyId));
     }
 
     private void showMeetName(View createdView, Meeting meeting) {

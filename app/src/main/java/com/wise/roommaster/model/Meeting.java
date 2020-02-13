@@ -1,6 +1,17 @@
 package com.wise.roommaster.model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.wise.roommaster.service.GetRoomListService;
+import com.wise.roommaster.ui.activity.SignupActivity;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 public class Meeting {
     private int id;
@@ -9,7 +20,11 @@ public class Meeting {
     private String meetName; // por enquanto descricao
     private Date startDateTime;
     private Date endDateTime;
+
+
     //private String meetDescription;
+    public Meeting(){}
+
     public Meeting(int id, int roomId, int ownerUserId, String meetName, Date startDateTime, Date endDateTime) {
         this.id = id;
         this.roomId = roomId;
@@ -35,9 +50,19 @@ public class Meeting {
         this.roomId = roomId;
     }
     public String getRoomName(){
-        String name = "";
 
-        return name;
+        String result = null;
+        try {
+            result = new GetRoomListService(roomId, this.getId()).execute().get();
+            JSONObject resultJson = new JSONObject(result);
+            return resultJson.getString("nome");
+        } catch (Exception e) {
+            System.out.println(e);
+            e.printStackTrace();
+            return "???????";
+
+        }
+
     }
 
     public int getOwnerUserId() {

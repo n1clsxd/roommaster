@@ -10,25 +10,23 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class GetRoomListService extends AsyncTask<Void, Void, String> {
+public class GetMeetingListService extends AsyncTask<Void, Void, String> {
     private int companyId;
-    private int roomId; //sera userId no futuro
-
-    public GetRoomListService(int companyId){
-        //this.companyId = Integer.toString(companyId);
+    private int userId;
+    public GetMeetingListService(int companyId){
         this.companyId = companyId;
     }
-    public GetRoomListService(int companyId, int roomId){
+    public GetMeetingListService(int companyId, int userId){
         this.companyId = companyId;
-        this.roomId = roomId;
+        this.userId = userId;
     }
 
     @Override
     protected String doInBackground(Void... voids) {
-        String urlWS = "http://172.30.248.126:8080/ReservaDeSala/rest/sala/salas";
+        String urlWS = "http://172.30.248.126:8080/ReservaDeSala/rest/reserva/byIdUsuario";
         String authorizarionHeader = "secret";
         String contentType = "application/json";
-        String companyId = Integer.toString(this.companyId);
+        String userId = Integer.toString(this.userId);
 
         try{
             StringBuilder result = new StringBuilder();
@@ -36,7 +34,7 @@ public class GetRoomListService extends AsyncTask<Void, Void, String> {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("authorization", authorizarionHeader);
-            conn.setRequestProperty("id_organizacao", companyId);
+            conn.setRequestProperty("id_usuario", userId);
             conn.setRequestProperty("Content-Type", contentType);
 
 
@@ -50,12 +48,9 @@ public class GetRoomListService extends AsyncTask<Void, Void, String> {
             }
             reader.close();
             JSONArray resultJsonArray = new JSONArray(result.toString());
-            if(this.roomId == 0){
-                return resultJsonArray.toString();
-            }else{
-                JSONObject resultJson = resultJsonArray.getJSONObject(roomId);
-                return resultJson.toString();
-            }
+
+            return resultJsonArray.toString();
+
 
 
 
