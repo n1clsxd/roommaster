@@ -23,10 +23,10 @@ public class GetMeetingListService extends AsyncTask<Void, Void, String> {
 
     @Override
     protected String doInBackground(Void... voids) {
-        String urlWS = "http://172.30.248.126:8080/ReservaDeSala/rest/reserva/byIdUsuario";
+        String urlWS = "http://172.30.248.126:8080/ReservaDeSala/rest/reserva/byIdOrganizacao";
         String authorizarionHeader = "secret";
         String contentType = "application/json";
-        String userId = Integer.toString(this.userId);
+        String companyId = Integer.toString(this.companyId);
 
         try{
             StringBuilder result = new StringBuilder();
@@ -34,11 +34,11 @@ public class GetMeetingListService extends AsyncTask<Void, Void, String> {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("authorization", authorizarionHeader);
-            conn.setRequestProperty("id_usuario", userId);
+            conn.setRequestProperty("id_organizacao", companyId);
             conn.setRequestProperty("Content-Type", contentType);
 
 
-            System.out.println("Response Code:" + conn.getResponseCode());
+            System.out.println("Response Code: " + conn.getResponseCode());
 
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -47,7 +47,9 @@ public class GetMeetingListService extends AsyncTask<Void, Void, String> {
                 result.append(line);
             }
             reader.close();
+
             JSONArray resultJsonArray = new JSONArray(result.toString());
+
 
             return resultJsonArray.toString();
 

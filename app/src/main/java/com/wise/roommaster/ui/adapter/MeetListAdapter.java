@@ -17,13 +17,12 @@ import java.util.List;
 public class MeetListAdapter extends BaseAdapter {
     private List<Meeting> meetings;
     private Context context;
-    private int companyId;
 
 
-    public MeetListAdapter(List<Meeting> meetings, Context context, int companyId) {
+    public MeetListAdapter(List<Meeting> meetings, Context context) {
         this.meetings = meetings;
         this.context = context;
-        this.companyId = companyId;
+
     }
 
     @Override
@@ -69,7 +68,6 @@ public class MeetListAdapter extends BaseAdapter {
 
     private void showEndTime(View createdView, Meeting meeting) {
         TextView endTime = createdView.findViewById(R.id.item_meet_time_end);
-
         endTime.setText(meeting.getEndDateTime().toString());
 
     }
@@ -81,7 +79,7 @@ public class MeetListAdapter extends BaseAdapter {
 
     private void showMeetRoomName(View createdView, Meeting meeting) {
         TextView meetRoomName = createdView.findViewById(R.id.item_meet_room_name);
-        meetRoomName.setText(meeting.getRoomName(this.companyId));
+        meetRoomName.setText(meeting.getRoomName());
     }
 
     private void showMeetName(View createdView, Meeting meeting) {
