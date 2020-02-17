@@ -1,17 +1,12 @@
 package com.wise.roommaster.dao;
 
 import com.wise.roommaster.model.Meeting;
-import com.wise.roommaster.model.Room;
 import com.wise.roommaster.service.GetMeetingListService;
-import com.wise.roommaster.service.GetRoomListService;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 public class MeetingDAO {
@@ -27,18 +22,26 @@ public class MeetingDAO {
             meetingResultJson = new JSONArray(meetingResult);
             meetings.clear();
             for(int i = 0; i < meetingResultJson.length(); i++){
+                JSONObject iJson = meetingResultJson.getJSONObject(i);
 
                 Meeting meeting = new Meeting();
-                meeting.setMeetName(meetingResultJson.getJSONObject(i).getString("descricao"));
+                meeting.setId(iJson.getInt("id"));
+                System.out.println("meeting id: " + meeting.getId());
+                meeting.setMeetName(iJson.getString("descricao"));
                 System.out.println("meeting name: " + meeting.getMeetName());
-                meeting.setRoomId(meetingResultJson.getJSONObject(i).getInt("idSala"));
+
+                meeting.setRoomId(iJson.getInt("idSala"));
                 System.out.println("room id: " + meeting.getRoomId());
-                meeting.setOwnerUserId(meetingResultJson.getJSONObject(i).getInt("idUsuario"));
+                meeting.setRoom(meeting.getRoomId());
+
+                meeting.setOwnerUserId(iJson.getInt("idUsuario"));
                 System.out.println("user id: " + meeting.getOwnerUserId());
-                meeting.setStartDateTime(meetingResultJson.getJSONObject(i).getString("dataHoraInicio"));
+                meeting.setStartDateTime(iJson.getString("dataHoraInicio"));
                 System.out.println("start dateTime: " +meeting.getStartDateTime());
-                meeting.setEndDateTime(meetingResultJson.getJSONObject(i).getString("dataHoraFim"));
+                meeting.setEndDateTime(iJson.getString("dataHoraFim"));
                 System.out.println("end dateTime: " + meeting.getEndDateTime());
+
+                meeting.setOwnerUserName(iJson.getString("nomeOrganizador"));
 
 
 
@@ -47,7 +50,7 @@ public class MeetingDAO {
             }
 
         }catch(Exception e){
-            System.out.println(e);
+            System.out.println("deu esse erro:" + e);
             e.printStackTrace();
         }
 

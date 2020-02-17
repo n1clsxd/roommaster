@@ -1,43 +1,43 @@
 package com.wise.roommaster.model;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
 import com.wise.roommaster.service.GetRoomListService;
-import com.wise.roommaster.ui.activity.SignupActivity;
+import com.wise.roommaster.util.Globals;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.Date;
-import java.util.concurrent.ExecutionException;
+import java.util.Locale;
+import java.util.TimeZone;
+
 
 public class Meeting {
     private int id;
     private int roomId;
+    private Room room;
     private int ownerUserId;
+    private String ownerUserName; //temporario
     private String meetName; // por enquanto descricao
-
     private Date startDateTime;
     private Date endDateTime;
+    private final String formatString = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
 
     //private String meetDescription;
-    public Meeting(){}
+    public Meeting() {
+
+    }
 
     public Meeting(int id, int roomId, int ownerUserId, String meetName, Date startDateTime, Date endDateTime) {
-        SimpleDateFormat format = new SimpleDateFormat(("yy-MM-dd HH:mm:ss"));
+
         this.id = id;
         this.roomId = roomId;
         this.ownerUserId = ownerUserId;
         this.meetName = meetName;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
+
 
     }
 
@@ -56,20 +56,37 @@ public class Meeting {
     public void setRoomId(int roomId) {
         this.roomId = roomId;
     }
+
     public String getRoomName(){
 
+        return this.room.getName();
+
+    }
+    public String getRoomFloor(){
+        return this.room.getFloor();
+    }
+    public Room getRoom(){
+        return this.room;
+    }
+    public void setRoom(int roomId){
         String result = null;
         try {
-            result = new GetRoomListService(roomId, this.getId()).execute().get();
+
+            result = new GetRoomListService(Globals.companyId, this.getRoomId()).execute().get();
             JSONObject resultJson = new JSONObject(result);
-            return resultJson.getString("nome");
+            this.room = new Room(
+                    resultJson.getString("nome"),
+                    resultJson.getString("localizacao"),
+                    resultJson.getInt("quantidadePessoasSentadas"),
+                    resultJson.getDouble("areaDaSala"),
+                    resultJson.getBoolean("possuiMultimidia"),
+                    resultJson.getBoolean("possuiArcon")
+            );
         } catch (Exception e) {
             System.out.println(e);
             e.printStackTrace();
-            return "???????";
 
         }
-
     }
 
     public int getOwnerUserId() {
@@ -88,37 +105,34 @@ public class Meeting {
         this.meetName = meetName;
     }
 
-    public String getStartDateTime() {
-        if(startDateTime == null){
-            return "start_date_time";
-        }
-        return startDateTime.toString();
+    public Date getStartDateTime() {
+        return startDateTime;
 
     }
 
-    public void setStartDateTime(String startDateTime) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd'T'HH:mm:ss");
-        String adapted[] = startDateTime.split("Z");
-        Date date;
-        date = new java.sql.Date(format.parse(adapted[0]).getTime());
-
-        this.startDateTime = date;
+    public void setStartDateTime(String startDateTime) throws Exception {
+        SimpleDateFormat format = new SimpleDateFormat(formatString, Locale.getDefault());
+        format.setTimeZone(TimeZone.getTimeZone("UTC"));
+        this.startDateTime = new Date(format.parse(startDateTime).getTime());
 
     }
 
-    public String getEndDateTime() {
-        if(endDateTime == null){
-            return "end_date_time";
-        }
-        return endDateTime.toString();
+    public Date getEndDateTime() {
+        return endDateTime;
     }
 
     public void setEndDateTime(String endDateTime) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd'T'HH:mm:ss");
-        String adapted[] = endDateTime.split("Z");
-        java.sql.Date date;
-        date = new java.sql.Date(format.parse(endDateTime).getTime());
-        this.endDateTime = date;
+        SimpleDateFormat format = new SimpleDateFormat(formatString, Locale.getDefault());
+        format.setTimeZone(TimeZone.getTimeZone("UTC"));
+        this.endDateTime = new Date(format.parse(endDateTime).getTime());
+
+    }
+
+    public void setOwnerUserName(String ownerUserName) {
+        this.ownerUserName = ownerUserName;
+    }
+    public String getOwnerUserName(){
+        return  this.ownerUserName;
     }
 }
 

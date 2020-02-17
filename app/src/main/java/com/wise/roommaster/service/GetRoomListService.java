@@ -50,10 +50,24 @@ public class GetRoomListService extends AsyncTask<Void, Void, String> {
             }
             reader.close();
             JSONArray resultJsonArray = new JSONArray(result.toString());
-            if(this.roomId == 0){
+            System.out.println("RESULT JSONARRAY SERA???:" + resultJsonArray.toString());
+            if(roomId == 0){
+                System.out.println("return caso sem roomId: "+ resultJsonArray.toString());
                 return resultJsonArray.toString();
+
             }else{
-                JSONObject resultJson = resultJsonArray.getJSONObject(roomId);
+                JSONObject resultJson = null;
+                System.out.println("checando qual sala tem o id:" +roomId);
+                for(int i = 0; i < resultJsonArray.length(); i++){
+                    System.out.println(resultJsonArray.getJSONObject(i).getInt("id"));
+                    if(resultJsonArray.getJSONObject(i).getInt("id") == roomId){
+                        resultJson = resultJsonArray.getJSONObject(i);
+                        break;
+
+                    }
+                }
+
+                System.out.println("return caso com roomId: " + resultJson.toString());
                 return resultJson.toString();
             }
 
@@ -61,6 +75,7 @@ public class GetRoomListService extends AsyncTask<Void, Void, String> {
 
 
         }catch (Exception e){
+            System.out.println("ERRO NO SERVICE GETROOMLIST: " + e);
             e.printStackTrace();
             return null;
         }

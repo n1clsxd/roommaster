@@ -17,6 +17,7 @@ import com.wise.roommaster.model.Meeting;
 import com.wise.roommaster.model.Room;
 import com.wise.roommaster.ui.adapter.MeetListAdapter;
 import com.wise.roommaster.ui.adapter.RoomListAdapter;
+import com.wise.roommaster.util.Globals;
 
 import java.util.List;
 
@@ -26,10 +27,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         final SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         final SharedPreferences.Editor editor = pref.edit();
+        Globals.companyId = pref.getInt("companyId",-1);
+        Globals.userId = pref.getInt("userId",-1);
+
         super.onCreate(savedInstanceState);
+
 
 
 

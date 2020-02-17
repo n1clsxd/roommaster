@@ -1,8 +1,7 @@
 package com.wise.roommaster.ui.adapter;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.TimeFormatException;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,9 @@ import android.widget.TextView;
 import com.wise.roommaster.R;
 import com.wise.roommaster.model.Meeting;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class MeetListAdapter extends BaseAdapter {
     private List<Meeting> meetings;
@@ -49,11 +50,17 @@ public class MeetListAdapter extends BaseAdapter {
 
         showMeetRoomName(createdView, meeting);
 
+        showMeetFloor(createdView, meeting);
+
         showStartTime(createdView,meeting);
 
         showEndTime(createdView, meeting);
-        
-        showBookerName(createdView, meeting);
+
+        showDate(createdView,meeting);
+
+        showMeetOwnerName(createdView, meeting);
+
+
         
         //showMeetingDescription(createdView, meeting);
         
@@ -61,29 +68,44 @@ public class MeetListAdapter extends BaseAdapter {
         return createdView;
     }
 
-    private void showBookerName(View createdView, Meeting meeting) {
-        TextView bookerName = createdView.findViewById(R.id.item_meet_booker);
-        //bookerName.setText(meeting.getBooker().getName());
-    }
 
     private void showEndTime(View createdView, Meeting meeting) {
         TextView endTime = createdView.findViewById(R.id.item_meet_time_end);
-        endTime.setText(meeting.getEndDateTime().toString());
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        endTime.setText(format.format(meeting.getEndDateTime().getTime()));
 
     }
 
     private void showStartTime(View createdView, Meeting meeting) {
         TextView startTime = createdView.findViewById(R.id.item_meet_time_start);
-        startTime.setText(meeting.getStartDateTime().toString());
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        startTime.setText(format.format(meeting.getStartDateTime().getTime()));
+    }
+    private void showDate(View createdView, Meeting meeting){
+        TextView date = createdView.findViewById(R.id.item_meet_date);
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        date.setText(Html.fromHtml("<u>"+format.format(meeting.getStartDateTime().getTime())+"</u>"));
     }
 
     private void showMeetRoomName(View createdView, Meeting meeting) {
         TextView meetRoomName = createdView.findViewById(R.id.item_meet_room_name);
+
         meetRoomName.setText(meeting.getRoomName());
+    }
+    private void showMeetFloor(View createdView, Meeting meeting) {
+        TextView meetFloor = createdView.findViewById(R.id.item_meet_floor);
+
+        meetFloor.setText(meeting.getRoomFloor());
     }
 
     private void showMeetName(View createdView, Meeting meeting) {
         TextView meetName = createdView.findViewById(R.id.item_meet_name);
         meetName.setText(meeting.getMeetName());
     }
+
+    private void showMeetOwnerName(View createdView, Meeting meeting) {
+        TextView MeetOwnerName = createdView.findViewById(R.id.item_meet_booker);
+        MeetOwnerName.setText(meeting.getOwnerUserName());
+    }
+
 }

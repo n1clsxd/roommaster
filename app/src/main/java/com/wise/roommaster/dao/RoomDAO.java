@@ -31,8 +31,9 @@ public class RoomDAO {
                 room.setFloor(roomResultJson.getJSONObject(i).getString("localizacao"));
                 room.setSeats(roomResultJson.getJSONObject(i).getInt("quantidadePessoasSentadas"));
                 room.setArea(roomResultJson.getJSONObject(i).getDouble("areaDaSala"));
-                room.setHasAir(roomResultJson.getJSONObject(i).getBoolean("possuiArcon"));
                 room.setHasMedia(roomResultJson.getJSONObject(i).getBoolean("possuiMultimidia"));
+                room.setHasAir(roomResultJson.getJSONObject(i).getBoolean("possuiArcon"));
+
                 rooms.add(room);
             }
 
