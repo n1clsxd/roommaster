@@ -24,6 +24,7 @@ import com.wise.roommaster.model.Room;
 import com.wise.roommaster.service.CreateMeetingService;
 import com.wise.roommaster.ui.adapter.RoomListAdapter;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -146,10 +147,19 @@ public class CreateMeetingActivity extends AppCompatActivity {
 
     }
     private void configDate(){
-        setViewAuto(cm_layout,cm_calendar);
-        calendarView.setMinDate(Calendar.getInstance().getTimeInMillis()-60000);
-        Date date = new Date(calendarView.getMinDate());
+
+        Calendar c = Calendar.getInstance();
+        calendarView.setMinDate(c.getTimeInMillis()-60000);
+        Long maxDate = (c.getTimeInMillis()+ c.getActualMaximum(Calendar.DAY_OF_MONTH)*24*60*6000);
+        c.add(Calendar.DAY_OF_MONTH,(c.getActualMaximum(Calendar.DAY_OF_MONTH)-c.getActualMinimum(Calendar.DAY_OF_MONTH)));
+        calendarView.setMaxDate(c.getTimeInMillis());
+
+
+
+        Date date = new Date(maxDate);
+        System.out.println(maxDate);
         confirmDateBtn.setText(date.toString());
+        setViewAuto(cm_layout,cm_calendar);
 
     }
 }
