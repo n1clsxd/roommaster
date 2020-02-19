@@ -1,5 +1,6 @@
 package com.wise.roommaster.ui.activity;
 
+import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Base64;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.DatePicker;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -145,5 +147,9 @@ public class CreateMeetingActivity extends AppCompatActivity {
     }
     private void configDate(){
         setViewAuto(cm_layout,cm_calendar);
+        calendarView.setMinDate(Calendar.getInstance().getTimeInMillis()-60000);
+        Date date = new Date(calendarView.getMinDate());
+        confirmDateBtn.setText(date.toString());
+
     }
 }

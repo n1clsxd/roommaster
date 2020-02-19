@@ -22,12 +22,16 @@
         android:id="@+id/list_meet_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="8dp"
+        android:paddingTop="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/item_meet">
+        app:layout_constraintVertical_bias="1.0"
+        tools:listitem="@layout/item_meet"
+        android:divider="@null"
+        android:dividerHeight="0dp">
+
 
     </ListView>
 

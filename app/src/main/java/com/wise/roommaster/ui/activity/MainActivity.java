@@ -15,6 +15,7 @@ import com.wise.roommaster.dao.MeetingDAO;
 import com.wise.roommaster.dao.RoomDAO;
 import com.wise.roommaster.model.Meeting;
 import com.wise.roommaster.model.Room;
+import com.wise.roommaster.service.CreateMeetingService;
 import com.wise.roommaster.ui.adapter.MeetListAdapter;
 import com.wise.roommaster.ui.adapter.RoomListAdapter;
 import com.wise.roommaster.util.Globals;
@@ -27,6 +28,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        startActivity(new Intent(MainActivity.this, CreateMeetingActivity.class));
+        ////////////
+        ///
+        ///
+        ///
+        ///
         final SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         final SharedPreferences.Editor editor = pref.edit();
         Globals.companyId = pref.getInt("companyId",-1);
