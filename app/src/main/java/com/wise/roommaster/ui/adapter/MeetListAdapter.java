@@ -25,6 +25,9 @@ public class MeetListAdapter extends BaseAdapter {
         this.context = context;
 
     }
+    public void update(){
+        super.notifyDataSetChanged();
+    }
 
     @Override
     public int getCount() {

@@ -53,4 +53,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logout_teste" />
 
+    <Button
+        android:id="@+id/quick_meet_teste"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="quickmeet"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/room_teste" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

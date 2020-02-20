@@ -27,6 +27,7 @@ public class RoomDAO {
             for(int i = 0; i < roomResultJson.length(); i++){
                 //rooms.add(new Room("sala teste","andar 2",20,20.0f,true,false));
                 Room room = new Room();
+                room.setId(roomResultJson.getJSONObject(i).getInt("id"));
                 room.setName(roomResultJson.getJSONObject(i).getString("nome"));
                 room.setFloor(roomResultJson.getJSONObject(i).getString("localizacao"));
                 room.setSeats(roomResultJson.getJSONObject(i).getInt("quantidadePessoasSentadas"));
