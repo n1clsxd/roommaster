@@ -27,7 +27,7 @@
         android:alpha="0.7"
         android:gravity="center"
         android:text="@string/start_title"
-        android:textColor="#37659D"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,13 +36,16 @@
 
     <EditText
         android:id="@+id/start_email_field"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:layout_marginTop="50dp"
 
+        android:layout_marginTop="50dp"
         android:ems="10"
         android:hint="usuario@empresa.com"
         android:inputType="textEmailAddress"
+        android:text="aaaaaaaaa"
+        android:textColor="@color/colorSecondaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,23 +53,27 @@
 
     <EditText
         android:id="@+id/start_password_field"
+        style="@style/Widget.AppCompat.EditText"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:layout_marginTop="20dp"
 
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="Senha do Usuário"
         android:inputType="textPassword"
+        android:textColor="@color/colorSecondaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/start_email_field" />
 
     <Button
         android:id="@+id/start_login_button"
-        android:layout_width="155dp"
-        android:layout_height="45dp"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="Entrar"
+        android:textColor="@color/colorPrimaryLight"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,6 +81,7 @@
 
     <Button
         android:id="@+id/start_signup_button"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
