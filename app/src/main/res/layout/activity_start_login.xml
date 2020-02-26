@@ -6,88 +6,121 @@
     android:layout_height="match_parent"
     tools:context=".ui.activity.MainActivity">
 
-    <ImageView
-        android:id="@+id/start_logo_image"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        android:contentDescription="@string/logo_do_app"
-        android:src="@drawable/roommaster_logo"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.122" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/start_title_text"
-        android:layout_width="241dp"
-        android:layout_height="47dp"
-        android:alpha="0.7"
-        android:gravity="center"
-        android:text="@string/start_title"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_logo_image" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".ui.activity.MainActivity">
 
-    <EditText
-        android:id="@+id/start_email_field"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="250dp"
-        android:layout_height="50dp"
+                <TextView
+                    android:id="@+id/start_title_text"
+                    android:layout_width="241dp"
+                    android:layout_height="47dp"
+                    android:alpha="0.7"
+                    android:gravity="center"
+                    android:text="@string/start_title"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="36sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/start_logo_image" />
 
-        android:layout_marginTop="50dp"
-        android:ems="10"
-        android:hint="usuario@empresa.com"
-        android:inputType="textEmailAddress"
-        android:text="aaaaaaaaa"
-        android:textColor="@color/colorSecondaryDark"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_title_text" />
+                <ImageView
+                    android:id="@+id/start_logo_image"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
 
-    <EditText
-        android:id="@+id/start_password_field"
-        style="@style/Widget.AppCompat.EditText"
-        android:layout_width="250dp"
-        android:layout_height="50dp"
+                    android:layout_marginTop="32dp"
+                    android:contentDescription="@string/logo_do_app"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/roommaster_logo" />
 
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:hint="Senha do Usuário"
-        android:inputType="textPassword"
-        android:textColor="@color/colorSecondaryDark"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_email_field" />
+                <EditText
+                    android:id="@+id/start_email_field"
+                    style="@style/Widget.AppCompat.EditText"
+                    android:layout_width="250dp"
+                    android:layout_height="50dp"
 
-    <Button
-        android:id="@+id/start_login_button"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:text="Entrar"
-        android:textColor="@color/colorPrimaryLight"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_password_field" />
+                    android:layout_marginTop="32dp"
+                    android:ems="10"
+                    android:hint="usuario@empresa.com"
+                    android:inputType="textEmailAddress"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/start_title_text" />
 
-    <Button
-        android:id="@+id/start_signup_button"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Novo Usuário"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_login_button" />
+                <EditText
+                    android:id="@+id/start_password_field"
+                    style="@style/Widget.AppCompat.EditText"
+                    android:layout_width="250dp"
+                    android:layout_height="50dp"
+
+                    android:layout_marginTop="8dp"
+                    android:ems="10"
+                    android:hint="Senha do Usuário"
+                    android:inputType="textPassword"
+                    app:layout_constraintEnd_toEndOf="@+id/start_email_field"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/start_email_field"
+                    app:layout_constraintTop_toBottomOf="@+id/start_email_field" />
+
+                <Button
+                    android:id="@+id/start_login_button"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Entrar"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/start_auto_check" />
+
+                <Button
+                    android:id="@+id/start_signup_button"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Novo Usuário"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:textSize="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/start_login_button" />
+
+                <CheckBox
+                    android:id="@+id/start_remind_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Lembrar E-Mail"
+                    app:layout_constraintStart_toStartOf="@+id/start_password_field"
+                    app:layout_constraintTop_toBottomOf="@+id/start_password_field" />
+
+                <CheckBox
+                    android:id="@+id/start_auto_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Login Automático"
+                    app:layout_constraintStart_toStartOf="@+id/start_remind_check"
+                    app:layout_constraintTop_toBottomOf="@+id/start_remind_check" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

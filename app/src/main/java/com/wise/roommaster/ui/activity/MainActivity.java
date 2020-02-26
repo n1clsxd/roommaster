@@ -47,18 +47,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //startActivity(new Intent(MainActivity.this, CreateMeetingActivity.class));
-        ////////////
-        ///
-        ///
-        ///
-        ///
+        super.onCreate(savedInstanceState);
         final SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         final SharedPreferences.Editor editor = pref.edit();
         Globals.companyId = pref.getInt("companyId",-1);
         Globals.userId = pref.getInt("userId",-1);
-
-        super.onCreate(savedInstanceState);
-
 
 
         String emailLogged = "";
@@ -222,6 +215,9 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(pref.getString("userEmail",null));
         startActivity(new Intent(MainActivity.this, LoginActivity.class));
         finish();
+    }
+    public void checkLogin(){
+
     }
 
 }

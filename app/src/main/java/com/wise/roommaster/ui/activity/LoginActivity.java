@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.wise.roommaster.R;
 import com.wise.roommaster.service.LoginService;
+import com.wise.roommaster.util.Globals;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,6 +35,22 @@ public class LoginActivity extends AppCompatActivity {
         final EditText emailEdt = findViewById(R.id.start_email_field);
         final EditText passwordEdt = findViewById(R.id.start_password_field);
 
+        final CheckBox remindChk = findViewById(R.id.start_remind_check);
+        final CheckBox autoChk = findViewById(R.id.start_auto_check);
+        autoChk.setVisibility(View.GONE);
+
+        remindChk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(remindChk.isActivated()){
+                    autoChk.setVisibility(View.VISIBLE);
+                }else{
+                    autoChk.setVisibility(View.GONE);
+                }
+                autoChk.clearAnimation();
+
+            }
+        });
 
         Button LoginBtn = findViewById(R.id.start_login_button);
 
@@ -47,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                     String result = new LoginService(emailStr,passwordStr).execute().get();
                     if(result.length()>0){
                         //emailToSave = emailStr;
-                        ActiveLogin(result);
+                        login(result,remindChk.isChecked(),autoChk.isChecked());
                         Toast.makeText(LoginActivity.this, "login realizado", Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(LoginActivity.this, "erro no login", Toast.LENGTH_SHORT).show();
@@ -72,12 +90,12 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void ActiveLogin(String result) {
+    public void login(String result,Boolean remind, Boolean auto) {
         String email = "";
         String name = "";
+        String companyName = "";
         int companyId = 0;
         int userId = 0;
-
         try {
             JSONObject userJSON = new JSONObject(result);
             if(userJSON.has("email")&&userJSON.has("nome")&&userJSON.has("idOrganizacao")){
@@ -86,9 +104,8 @@ public class LoginActivity extends AppCompatActivity {
                 userId = userJSON.getInt("id");
                 JSONObject companyJSON = userJSON.getJSONObject("idOrganizacao");
                 companyId = companyJSON.getInt("id");
-
+                companyName = companyJSON.getString("nome");
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -96,17 +113,38 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
         //editor.putBoolean("isLogged",MainActivity.isLogged);
-        editor.putString("userEmail",email);
-        editor.putString("userNome", name);
-        editor.putInt("companyId", companyId);
+
+        //defaults
+        Globals.setUserId(userId);
+        Globals.setUserName(name);
+        Globals.setCompanyId(companyId);
+        Globals.setCompanyName(companyName);
+
         editor.putInt("userId",userId);
+        editor.putString("userName", name);
+        editor.putInt("companyId", companyId);
+        editor.putString("companyName", companyName);
+        //optional
+
+        if(remind){
+            Globals.setUserEmail(email);
+            editor.putString("userEmail",email);
+        }
+        Globals.setAutoLogin(auto);
+        editor.putBoolean("autoLogin", auto);
+
+        //////////////
+
+
+
         editor.commit();
         System.out.println("Usuario ja logado: "+ pref.getString("userEmail",null));
         System.out.println("id logado:" + pref.getInt("userId", -1));
-        Toast.makeText(this, "Usuario ja logado: "+ (pref.getString("userEmail",null)), Toast.LENGTH_SHORT).show();
 
+        Toast.makeText(this, "Usuário Logado: "+ (pref.getString("userEmail",null)), Toast.LENGTH_SHORT).show();
+        finish();
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
-        //MainActivity.isLogged = true;
+
     }
 
 }
