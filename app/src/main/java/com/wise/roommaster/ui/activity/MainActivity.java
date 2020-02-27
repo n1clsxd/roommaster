@@ -1,10 +1,8 @@
 package com.wise.roommaster.ui.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,11 +10,11 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.wise.roommaster.R;
@@ -32,49 +30,45 @@ import com.wise.roommaster.util.Globals;
 
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
+
+
+import static android.content.SharedPreferences.*;
 
 public class MainActivity extends AppCompatActivity {
-   //public static boolean isLogged = false;
+
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        configMeetList();
+        Globals.printAll();
+        //configMeetList();
+        //startActivity(new Intent(MainActivity.this, LoginActivity.class));
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //startActivity(new Intent(MainActivity.this, CreateMeetingActivity.class));
-        super.onCreate(savedInstanceState);
+
         final SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-        final SharedPreferences.Editor editor = pref.edit();
-        Globals.companyId = pref.getInt("companyId",-1);
-        Globals.userId = pref.getInt("userId",-1);
-
-
-        String emailLogged = "";
-        try{
-            emailLogged = pref.getString("userEmail", null);
-
-            System.out.println(emailLogged);
-
-        }catch (Exception e){
-            System.out.println("uga");
-
+        final Editor editor = pref.edit();
+        Globals.update(pref);
+        if(Globals.isAutoLoginEnabled()){
+            Globals.logged = true;
         }
-        if(emailLogged != null){
+        //startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        super.onCreate(savedInstanceState);
+
+
+        if(Globals.isLogged()){
+            Toast.makeText(this, "finalmente funcionou", Toast.LENGTH_SHORT).show();
             setContentView(R.layout.activity_main_meet_list);
-
             configMeetList();
-
 
             Button logoutTesteBtn = findViewById(R.id.logout_teste);
             logoutTesteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    quickLogout(editor, pref);
+                    quickLogout(editor);
                 }
             });
             final Button roomTesteBtn = findViewById(R.id.room_teste);
@@ -105,7 +99,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }else{
+
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
         }
 
 
@@ -117,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
-        super.onBackPressed();
+
     }
 
 
@@ -132,8 +128,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.main_activity_menu_test_logout){
             final SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-            final SharedPreferences.Editor editor = pref.edit();
-            quickLogout(editor, pref);
+            final Editor editor = pref.edit();
+            quickLogout(editor);
         }
         if(item.getItemId() == R.id.main_activity_menu_test_allrooms){
             setContentView(R.layout.activity_create_meeting);
@@ -182,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
 
         ListView roomList = findViewById(R.id.list_room_listview);
         RoomDAO roomDAO = new RoomDAO();
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        //SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         roomDAO.updateRoomList(Globals.companyId);
         List<Room> rooms = new RoomDAO().roomList();
 
@@ -205,18 +201,12 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    public void quickLogout(SharedPreferences.Editor editor, SharedPreferences pref) {
-        editor.remove("userEmail");
-        editor.remove("userName");
-        editor.remove("companyId");
+    public void quickLogout(Editor editor) {
+        editor.clear();
         editor.commit();
-        Globals.companyId = 0;
-        Globals.userId = 0;
-        System.out.println(pref.getString("userEmail",null));
+        Globals.reset();
+        ActivityCompat.finishAffinity(MainActivity.this);
         startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        finish();
-    }
-    public void checkLogin(){
 
     }
 

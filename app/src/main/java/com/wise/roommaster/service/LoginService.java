@@ -30,7 +30,7 @@ public class LoginService extends AsyncTask<Void, Void, String> {
             conn.setRequestProperty("authorization", authorizationHeader);
             conn.setRequestProperty("email", email);
             conn.setRequestProperty("password", password);
-
+            conn.setReadTimeout(7000);
             BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line;
             while ((line = rd.readLine()) != null) {

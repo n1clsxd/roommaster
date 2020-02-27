@@ -2,6 +2,9 @@ package com.wise.roommaster.ui.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
@@ -12,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.wise.roommaster.R;
 import com.wise.roommaster.service.LoginService;
@@ -21,12 +25,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
-    private String emailToSave;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setTitle("Bem-vindo");
-        getSupportActionBar().hide();
+
         StrictMode.ThreadPolicy policy =
                 new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -34,46 +37,60 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start_login);
         final EditText emailEdt = findViewById(R.id.start_email_field);
         final EditText passwordEdt = findViewById(R.id.start_password_field);
-
         final CheckBox remindChk = findViewById(R.id.start_remind_check);
         final CheckBox autoChk = findViewById(R.id.start_auto_check);
-        autoChk.setVisibility(View.GONE);
+
+        updateView(emailEdt, remindChk, autoChk);
 
         remindChk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(remindChk.isActivated()){
-                    autoChk.setVisibility(View.VISIBLE);
-                }else{
-                    autoChk.setVisibility(View.GONE);
+                autoChk.setEnabled(remindChk.isChecked());
+                autoChk.invalidate();
+                if(!remindChk.isChecked()){
+                    emailEdt.setEnabled(!remindChk.isChecked());
+                    emailEdt.setTypeface(Typeface.DEFAULT);
+                    emailEdt.invalidate();
                 }
-                autoChk.clearAnimation();
-
             }
         });
 
-        Button LoginBtn = findViewById(R.id.start_login_button);
-
+        final Button LoginBtn = findViewById(R.id.start_login_button);
 
         LoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try{
-                    final String emailStr = emailEdt.getText().toString();
-                    final String passwordStr = passwordEdt.getText().toString();
+                ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+                assert connManager != null;
+                NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
+                assert networkInfo != null;
 
-                    String result = new LoginService(emailStr,passwordStr).execute().get();
-                    if(result.length()>0){
-                        //emailToSave = emailStr;
-                        login(result,remindChk.isChecked(),autoChk.isChecked());
-                        Toast.makeText(LoginActivity.this, "login realizado", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(LoginActivity.this, "erro no login", Toast.LENGTH_SHORT).show();
+                if (networkInfo.isConnected()) {
+                    LoginBtn.setEnabled(false);
+                    try{
+                        final String emailStr = emailEdt.getText().toString();
+                        final String passwordStr = passwordEdt.getText().toString();
+
+                        String result = new LoginService(emailStr,passwordStr).execute().get();
+                        if(result.length()>0){
+                            //emailToSave = emailStr;
+
+
+                            login(result,remindChk.isChecked(),autoChk.isChecked());
+                            System.out.println("login automatico:" + autoChk.isChecked());
+                            Toast.makeText(LoginActivity.this, "login realizado", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(LoginActivity.this, "erro no login", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
-
-                }catch (Exception e){
-                    e.printStackTrace();
+                    LoginBtn.setEnabled(true);
+                }else{
+                    Toast.makeText(LoginActivity.this, "Não foi possível conectar à rede, verifique sua conexão.", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 
@@ -81,13 +98,26 @@ public class LoginActivity extends AppCompatActivity {
         SignupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ActivityCompat.finishAffinity(LoginActivity.this);
                 startActivity(new Intent(LoginActivity.this, SignupActivity.class));
-                //setContentView(R.layout.activity_start_signup);
+
             }
         });
 
 
+    }
+
+    public void updateView(EditText emailEdt, CheckBox remindChk, CheckBox autoChk) {
+        remindChk.setChecked(Globals.isEmailReminded());
+        remindChk.invalidate();
+        autoChk.setEnabled(remindChk.isChecked());
+        autoChk.invalidate();
+        emailEdt.setEnabled(!remindChk.isChecked());
+        if(!emailEdt.isEnabled()) {
+            emailEdt.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC));
+            emailEdt.setText(Globals.userEmail);
+            emailEdt.invalidate();
+        }
     }
 
     public void login(String result,Boolean remind, Boolean auto) {
@@ -112,37 +142,27 @@ public class LoginActivity extends AppCompatActivity {
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
-        //editor.putBoolean("isLogged",MainActivity.isLogged);
-
         //defaults
         Globals.setUserId(userId);
-        Globals.setUserName(name);
-        Globals.setCompanyId(companyId);
-        Globals.setCompanyName(companyName);
-
         editor.putInt("userId",userId);
+        Globals.setUserName(name);
         editor.putString("userName", name);
+        Globals.setCompanyId(companyId);
         editor.putInt("companyId", companyId);
+        Globals.setCompanyName(companyName);
         editor.putString("companyName", companyName);
-        //optional
-
-        if(remind){
-            Globals.setUserEmail(email);
-            editor.putString("userEmail",email);
-        }
+        Globals.setUserEmail(email);
+        editor.putString("userEmail",email);
+        Globals.setRemindEmail(remind);
+        editor.putBoolean("remindEmail",remind);
         Globals.setAutoLogin(auto);
         editor.putBoolean("autoLogin", auto);
+        editor.apply();
 
-        //////////////
-
-
-
-        editor.commit();
-        System.out.println("Usuario ja logado: "+ pref.getString("userEmail",null));
+        System.out.println("Usuario ja logado: "+ email);
         System.out.println("id logado:" + pref.getInt("userId", -1));
-
-        Toast.makeText(this, "Usuário Logado: "+ (pref.getString("userEmail",null)), Toast.LENGTH_SHORT).show();
-        finish();
+        Globals.logged = true;
+        ActivityCompat.finishAffinity(LoginActivity.this);
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
     }
