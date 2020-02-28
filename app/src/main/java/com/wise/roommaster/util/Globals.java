@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 
 public class Globals {
 
+    public static Boolean devMode = true;
     public static int userId;
     public static String userName;
     public static String userEmail;

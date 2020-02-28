@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -19,6 +20,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.wise.roommaster.R;
 import com.wise.roommaster.service.LoginService;
+import com.wise.roommaster.util.ConnectionUtil;
 import com.wise.roommaster.util.Globals;
 
 import org.json.JSONException;
@@ -28,8 +30,15 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        final SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        Globals.update(pref);
+        if(Globals.isAutoLoginEnabled()){
+            Globals.logged = true;
+        }
         super.onCreate(savedInstanceState);
-
+        if(getSupportActionBar() !=null){
+            getSupportActionBar().hide();
+        }
         StrictMode.ThreadPolicy policy =
                 new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -39,19 +48,29 @@ public class LoginActivity extends AppCompatActivity {
         final EditText passwordEdt = findViewById(R.id.start_password_field);
         final CheckBox remindChk = findViewById(R.id.start_remind_check);
         final CheckBox autoChk = findViewById(R.id.start_auto_check);
-
         updateView(emailEdt, remindChk, autoChk);
-
+        emailEdt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus && !Patterns.EMAIL_ADDRESS.matcher(emailEdt.getText().toString()).matches()){
+                    Toast.makeText(LoginActivity.this, "email invalido", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         remindChk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                autoChk.setEnabled(remindChk.isChecked());
-                autoChk.invalidate();
                 if(!remindChk.isChecked()){
+                    autoChk.setEnabled(remindChk.isChecked());
+                    autoChk.setChecked(remindChk.isChecked());
                     emailEdt.setEnabled(!remindChk.isChecked());
                     emailEdt.setTypeface(Typeface.DEFAULT);
                     emailEdt.invalidate();
+                }else{
+                    autoChk.setEnabled(remindChk.isChecked());
                 }
+                autoChk.invalidate();
+
             }
         });
 
@@ -60,12 +79,8 @@ public class LoginActivity extends AppCompatActivity {
         LoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-                assert connManager != null;
-                NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
-                assert networkInfo != null;
-
-                if (networkInfo.isConnected()) {
+                System.out.println("CLICADO");
+                if (ConnectionUtil.hasConnection(getApplicationContext())) {
                     LoginBtn.setEnabled(false);
                     try{
                         final String emailStr = emailEdt.getText().toString();
@@ -86,10 +101,11 @@ public class LoginActivity extends AppCompatActivity {
                     }catch (Exception e){
                         e.printStackTrace();
                     }
-                    LoginBtn.setEnabled(true);
+
                 }else{
                     Toast.makeText(LoginActivity.this, "Não foi possível conectar à rede, verifique sua conexão.", Toast.LENGTH_SHORT).show();
                 }
+                LoginBtn.setEnabled(true);
 
             }
         });
