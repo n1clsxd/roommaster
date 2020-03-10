@@ -8,7 +8,6 @@ import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import com.wise.roommaster.R;
 import com.wise.roommaster.util.Globals;

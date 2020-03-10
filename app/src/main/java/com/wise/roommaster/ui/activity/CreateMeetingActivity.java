@@ -1,19 +1,15 @@
 package com.wise.roommaster.ui.activity;
 
-import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Base64;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.DatePicker;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,14 +24,12 @@ import com.wise.roommaster.service.CreateMeetingService;
 import com.wise.roommaster.ui.adapter.RoomListAdapter;
 import com.wise.roommaster.util.Globals;
 
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class CreateMeetingActivity extends AppCompatActivity {
-    static FrameLayout cm_layout;
+    FrameLayout cm_layout;
     //PRINCIPAL
     ConstraintLayout cm_main;
     ConstraintLayout cm_room_list;
@@ -108,11 +102,11 @@ public class CreateMeetingActivity extends AppCompatActivity {
         confirmMeetingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
 
-                String result = null;
+
+                String result;
                 try {
-                    if(selectedMeetName != ""){
+                    if(!selectedMeetName.equals("")){
                         if(selectedRoomId != 0){
                             if(selectedDate != null){
                                 result = new CreateMeetingService(

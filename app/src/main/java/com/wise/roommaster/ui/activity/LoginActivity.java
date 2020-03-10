@@ -2,11 +2,12 @@ package com.wise.roommaster.ui.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -16,8 +17,10 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.wise.roommaster.R;
 import com.wise.roommaster.service.LoginService;
 import com.wise.roommaster.util.ConnectionUtil;
@@ -27,6 +30,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
+    ConstraintLayout loginLayout;
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,19 +50,68 @@ public class LoginActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
         setContentView(R.layout.activity_start_login);
+
+            loginLayout = findViewById(R.id.login_layout);
+
+
         final EditText emailEdt = findViewById(R.id.start_email_field);
         final EditText passwordEdt = findViewById(R.id.start_password_field);
         final CheckBox remindChk = findViewById(R.id.start_remind_check);
         final CheckBox autoChk = findViewById(R.id.start_auto_check);
+        final Button loginBtn = findViewById(R.id.start_login_button);
         updateView(emailEdt, remindChk, autoChk);
+        loginBtn.setEnabled(canLogin(emailEdt.getText().toString(),passwordEdt.getText().toString()));
+        loginBtn.setTextColor(Color.parseColor("#808080"));
+
         emailEdt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus && !Patterns.EMAIL_ADDRESS.matcher(emailEdt.getText().toString()).matches()){
-                    Toast.makeText(LoginActivity.this, "email invalido", Toast.LENGTH_SHORT).show();
+                if(!hasFocus && emailEdt.getText().toString().equals("") && !emailEdt.getText().toString().equals("a")){
+                    emailEdt.setError("Campo vazio.");
+                }else if(!hasFocus && !Patterns.EMAIL_ADDRESS.matcher(emailEdt.getText().toString()).matches()){
+                    emailEdt.setError("Email inválido.");
+                    //Toast.makeText(LoginActivity.this, "email invalido", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+        passwordEdt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus && passwordEdt.getText().toString().equals("")) {
+                    passwordEdt.setError("Campo vazio.");
+
                 }
             }
         });
+        passwordEdt.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after){}
+            @Override public void afterTextChanged(Editable s) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                loginBtn.setEnabled(canLogin(emailEdt.getText().toString(),passwordEdt.getText().toString()));
+                if(loginBtn.isEnabled()){
+                    loginBtn.setTextColor(getResources().getColor(R.color.colorPrimaryLight));
+                }else{
+                    loginBtn.setTextColor(Color.parseColor("#808080"));
+                }
+            }
+        });
+
+        emailEdt.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after){}
+            @Override public void afterTextChanged(Editable s) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                loginBtn.setEnabled(canLogin(emailEdt.getText().toString(),passwordEdt.getText().toString()));
+                if(loginBtn.isEnabled()){
+                    loginBtn.setTextColor(getResources().getColor(R.color.colorPrimaryLight));
+                }else{
+                    loginBtn.setTextColor(Color.parseColor("#808080"));
+                }
+            }
+        });
+
         remindChk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,38 +129,47 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        final Button LoginBtn = findViewById(R.id.start_login_button);
 
-        LoginBtn.setOnClickListener(new View.OnClickListener() {
+
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.out.println("CLICADO");
                 if (ConnectionUtil.hasConnection(getApplicationContext())) {
-                    LoginBtn.setEnabled(false);
+                    loginBtn.setEnabled(false);
                     try{
                         final String emailStr = emailEdt.getText().toString();
                         final String passwordStr = passwordEdt.getText().toString();
 
                         String result = new LoginService(emailStr,passwordStr).execute().get();
+                        System.out.println("resultado login" + result);
                         if(result.length()>0){
                             //emailToSave = emailStr;
 
 
                             login(result,remindChk.isChecked(),autoChk.isChecked());
-                            System.out.println("login automatico:" + autoChk.isChecked());
-                            Toast.makeText(LoginActivity.this, "login realizado", Toast.LENGTH_SHORT).show();
+                            Thread.sleep(15000);
+
                         }else{
-                            Toast.makeText(LoginActivity.this, "erro no login", Toast.LENGTH_SHORT).show();
+                            Snackbar snackbar = Snackbar.make(loginLayout,"Dados incorretos. Verifique e tente novamente.",Snackbar.LENGTH_SHORT);
+                            snackbar.show();
+
                         }
 
                     }catch (Exception e){
+                        Snackbar snackbar = Snackbar.make(loginLayout,("Erro inesperado: "+ e),Snackbar.LENGTH_SHORT);
+                        snackbar.show();
                         e.printStackTrace();
                     }
 
                 }else{
-                    Toast.makeText(LoginActivity.this, "Não foi possível conectar à rede, verifique sua conexão.", Toast.LENGTH_SHORT).show();
+
+                    Snackbar snackbar = Snackbar.make(loginLayout,"Não foi possível conectar à rede, verifique sua conexão.",Snackbar.LENGTH_SHORT);
+                    snackbar.show();
                 }
-                LoginBtn.setEnabled(true);
+
+                loginBtn.setEnabled(true);
 
             }
         });
@@ -134,6 +198,16 @@ public class LoginActivity extends AppCompatActivity {
             emailEdt.setText(Globals.userEmail);
             emailEdt.invalidate();
         }
+    }
+
+    public Boolean canLogin(String email, String password){
+        if(!email.equals("") && !password.equals("")){
+            return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+        }
+        if(email.equals("a") && password.equals("a")){
+            return true;
+        }
+        return false;
     }
 
     public void login(String result,Boolean remind, Boolean auto) {
