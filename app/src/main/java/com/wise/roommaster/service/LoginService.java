@@ -30,8 +30,8 @@ public class LoginService extends AsyncTask<Void, Void, String> {
             conn.setRequestProperty("authorization", authorizationHeader);
             conn.setRequestProperty("email", email);
             conn.setRequestProperty("password", password);
-            conn.setReadTimeout(4000);
-            conn.setConnectTimeout(4000);
+            conn.setReadTimeout(20000);
+            conn.setConnectTimeout(20000);
             conn.connect();
             BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line;
@@ -42,10 +42,10 @@ public class LoginService extends AsyncTask<Void, Void, String> {
             rd.close();
 
             System.out.println("resultado do request" + result.toString());
-
             return result.toString();
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println(e);
             return null;
         }
     }

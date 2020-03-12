@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         if(Globals.isLogged()){
-            Toast.makeText(this, "finalmente funcionou", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "finalmente funcionou", Toast.LENGTH_SHORT).show();
             setContentView(R.layout.activity_main_meet_list);
             configMeetList();
 
@@ -71,26 +71,7 @@ public class MainActivity extends AppCompatActivity {
                     quickLogout(editor);
                 }
             });
-            final Button roomTesteBtn = findViewById(R.id.room_teste);
-            roomTesteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    setContentView(R.layout.activity_create_meeting);
-                    findViewById(R.id.create_meeting_main).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.create_meeting_room_list).setVisibility(View.VISIBLE);
 
-                    //configRoomList();
-
-                }
-            });
-            Button quickMeetBtn = findViewById(R.id.quick_meet_teste);
-            quickMeetBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    quickMeet();
-
-                }
-            });
             final FloatingActionButton newMeetingBtn = findViewById(R.id.create_meeting_button);
             newMeetingBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -102,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
+
         }
 
 
@@ -159,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
         meetList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 try{
                     Meeting meeting = meetings.get(position);
                     System.out.println("a ser deletado:" + meeting.getId());

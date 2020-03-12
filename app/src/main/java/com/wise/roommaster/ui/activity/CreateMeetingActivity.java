@@ -1,5 +1,6 @@
 package com.wise.roommaster.ui.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -10,12 +11,13 @@ import android.widget.CalendarView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.core.app.ActivityCompat;
 
 import com.wise.roommaster.R;
 import com.wise.roommaster.dao.RoomDAO;
@@ -24,9 +26,12 @@ import com.wise.roommaster.service.CreateMeetingService;
 import com.wise.roommaster.ui.adapter.RoomListAdapter;
 import com.wise.roommaster.util.Globals;
 
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class CreateMeetingActivity extends AppCompatActivity {
     FrameLayout cm_layout;
@@ -43,18 +48,27 @@ public class CreateMeetingActivity extends AppCompatActivity {
     //CALENDARIO
     Button selectDateBtn;
         CalendarView calendarView;
-        RecyclerView dayView;
+        TimePicker startTimePickerView;
+        TimePicker endTimePickerView;
         Button confirmDateBtn;
 
     Button confirmMeetingBtn;
     //////////////////
     public int selectedRoomId;
     public Date selectedDate;
+    public Date selectedStartDate;
+    public Date selectedEndDate;
+    public long selectedStartTime;
+    public long selectedEndTime;
     public String selectedMeetName;
+    public int selectedYear;
+    public int selectedMonth;
+    public int selectedDay;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
 
 
@@ -74,7 +88,10 @@ public class CreateMeetingActivity extends AppCompatActivity {
 
         selectDateBtn = findViewById(R.id.create_meeting_select_date_button);
             calendarView = findViewById(R.id.create_meeting_calendar_view);
-            dayView = findViewById(R.id.create_meeting_day_view);
+            startTimePickerView = findViewById(R.id.start_time_picker_view);
+            startTimePickerView.setIs24HourView(true);
+            endTimePickerView = findViewById(R.id.end_time_picker_view);
+            endTimePickerView.setIs24HourView(true);
             confirmDateBtn = findViewById(R.id.create_meeting_calendar_confirm);
 
 
@@ -108,15 +125,18 @@ public class CreateMeetingActivity extends AppCompatActivity {
                 try {
                     if(!selectedMeetName.equals("")){
                         if(selectedRoomId != 0){
-                            if(selectedDate != null){
+                            if(selectedStartDate != null && selectedEndDate != null){
+
                                 result = new CreateMeetingService(
                                         selectedRoomId,
                                         Globals.userId,//pref.getInt("userId",-1),
                                         selectedMeetName,
-                                        selectedDate,
-                                        selectedDate
+                                        selectedStartDate,
+                                        selectedEndDate
                                 ).execute().get();
                                 System.out.println("tentativa de criar reserva deu certo: " + result);
+                                ActivityCompat.finishAffinity(CreateMeetingActivity.this);
+                                startActivity(new Intent(CreateMeetingActivity.this, MainActivity.class));
                             }else{
                                 System.out.println("falta a data");
                             }
@@ -200,16 +220,54 @@ public class CreateMeetingActivity extends AppCompatActivity {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                c.clear();
-                c.set(year,month,dayOfMonth);
-                selectedDate = new Date(c.getTimeInMillis());
-                System.out.println(selectedDate.toString());
+                //c.clear();
+                //c.set(year,month,dayOfMonth);
+                selectedYear = year;
+                selectedMonth = month;
+                selectedDay = dayOfMonth;
+
+
+                //System.out.println(selectedDate.toString());
 
             }
         });
+        startTimePickerView.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                Calendar c = Calendar.getInstance();
+                c.set(selectedYear,selectedMonth,selectedDay, hourOfDay, minute);
+                selectedStartDate = c.getTime();
+
+
+                //selectedStartTime = hourOfDay*1000*60*60 + minute*60*1000;
+            }
+        });
+        endTimePickerView.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                Calendar c = Calendar.getInstance();
+                c.set(selectedYear,selectedMonth,selectedDay, hourOfDay, minute);
+                selectedEndDate = c.getTime();
+                //selectedStartDate.setTime(hourOfDay*1000*60*60 + minute*60*1000);
+                //selectedEndTime = hourOfDay*100*60*60 + minute*60*1000;
+            }
+        });
+
         confirmDateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
+
+
+
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                final String date = format.format(selectedStartDate.getTime());
+                format = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                final String startTime = format.format(selectedStartDate.getTime());
+                final String endTime = format.format(selectedStartDate.getTime());
+                selectDateBtn.setText((date + ", " + startTime + " - " + endTime));
                 setViewAuto(cm_layout,cm_main);
             }
         });

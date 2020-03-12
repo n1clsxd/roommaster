@@ -2,7 +2,6 @@ package com.wise.roommaster.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Base64;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -42,8 +41,8 @@ public class SignupActivity extends AppCompatActivity {
         companySpn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                selectCompanyId=companyList.get(position).getId();
+                Toast.makeText(SignupActivity.this, ("ID DA EMRPESA: " + companyList.get(position).getId()), Toast.LENGTH_SHORT).show();
+                    selectCompanyId=companyList.get(position).getId();
             }
 
             @Override
@@ -73,6 +72,7 @@ public class SignupActivity extends AppCompatActivity {
 
                                         companyId = new int[resultJson.length()];
                                         companyName = new String[resultJson.length()];
+                                        companyList.clear();
                                         for(int i = 0;i < resultJson.length(); i++){
                                             JSONObject obj = resultJson.getJSONObject(i);
                                             if(obj.has("id")&&obj.has("nome")&&obj.has("tipoOrganizacao")){
@@ -84,7 +84,6 @@ public class SignupActivity extends AppCompatActivity {
                                                 company.setId(id);
                                                 company.setName(name);
                                                 company.setCompanyType(type);
-                                                companyList.clear();
 
                                                 companyList.add(company);
                                                 companyNameList.add(company.getName()+" - "+company.getCompanyType());

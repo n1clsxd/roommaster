@@ -136,31 +136,35 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 System.out.println("CLICADO");
+
                 if (ConnectionUtil.hasConnection(getApplicationContext())) {
                     loginBtn.setEnabled(false);
+                    String result = "";
                     try{
                         final String emailStr = emailEdt.getText().toString();
                         final String passwordStr = passwordEdt.getText().toString();
 
-                        String result = new LoginService(emailStr,passwordStr).execute().get();
+
+                        result = new LoginService(emailStr,passwordStr).execute().get();
+                        //Thread.sleep(4000);
                         System.out.println("resultado login" + result);
-                        if(result.length()>0){
-                            //emailToSave = emailStr;
 
 
+                    }catch (Exception e){
+                        Toast.makeText(LoginActivity.this, ("Erro inesperado: "+ e), Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                        
+                    }
+
+                    if (result != null) {
+                        if(!result.equals("")){
                             login(result,remindChk.isChecked(),autoChk.isChecked());
-                            Thread.sleep(15000);
-
                         }else{
                             Snackbar snackbar = Snackbar.make(loginLayout,"Dados incorretos. Verifique e tente novamente.",Snackbar.LENGTH_SHORT);
                             snackbar.show();
-
                         }
-
-                    }catch (Exception e){
-                        Snackbar snackbar = Snackbar.make(loginLayout,("Erro inesperado: "+ e),Snackbar.LENGTH_SHORT);
-                        snackbar.show();
-                        e.printStackTrace();
+                    }else{
+                        Toast.makeText(LoginActivity.this, "erro misterioso", Toast.LENGTH_SHORT).show();
                     }
 
                 }else{
@@ -201,12 +205,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public Boolean canLogin(String email, String password){
+        if(email.equals("a") && password.equals("a")){
+            return true;
+        }else
         if(!email.equals("") && !password.equals("")){
             return Patterns.EMAIL_ADDRESS.matcher(email).matches();
         }
-        if(email.equals("a") && password.equals("a")){
-            return true;
-        }
+
         return false;
     }
 
