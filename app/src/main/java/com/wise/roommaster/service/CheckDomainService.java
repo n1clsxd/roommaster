@@ -9,9 +9,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public class CheckDomainService extends AsyncTask <Void, Void, String> {
 
@@ -58,7 +55,7 @@ public class CheckDomainService extends AsyncTask <Void, Void, String> {
 
         } catch (Exception e) {
             System.out.println("algo deu errado");
-            System.out.println(e);
+            //System.out.println(e);
             e.printStackTrace();
             return null;
 

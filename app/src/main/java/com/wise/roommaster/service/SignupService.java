@@ -2,7 +2,6 @@ package com.wise.roommaster.service;
 
 import android.os.AsyncTask;
 import android.util.Base64;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;

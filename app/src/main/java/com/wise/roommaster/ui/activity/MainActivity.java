@@ -10,11 +10,12 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.wise.roommaster.R;
@@ -62,6 +63,14 @@ public class MainActivity extends AppCompatActivity {
         if(Globals.isLogged()){
             //Toast.makeText(this, "finalmente funcionou", Toast.LENGTH_SHORT).show();
             setContentView(R.layout.activity_main_meet_list);
+            final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefresh);
+            pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    configMeetList();
+                    pullToRefresh.setRefreshing(false);
+                }
+            });
             configMeetList();
 
             Button logoutTesteBtn = findViewById(R.id.logout_teste);
@@ -155,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
+
 
     }
     private void configRoomList(){

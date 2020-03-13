@@ -5,10 +5,6 @@
     tools:ignore="HardcodedText">
 
 
-
-    <item
-        android:title="Funcoes Apenas de teste" />
-
     <item
         android:id="@+id/main_activity_menu_test_logout"
         android:title="Logout"
@@ -16,10 +12,14 @@
 
     <item
         android:id="@+id/main_activity_menu_test_allrooms"
-        android:title="Lista de Salas"/>
+        android:enabled="true"
+        android:title="Lista de Salas"
+        android:visible="false" />
 
     <item
         android:id="@+id/main_activity_menu_test_quickmeet"
-        android:title="Quick Reuniao" />
+        android:enabled="true"
+        android:title="Quick Reuniao"
+        android:visible="false" />
 
 </menu>

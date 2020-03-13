@@ -11,13 +11,14 @@
     android:paddingBottom="4dp">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/item_meet_card"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
 
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="16dp"
+        app:contentPaddingBottom="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,24 +29,24 @@
             android:layout_height="match_parent">
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/item_meet_expand_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:background="#00FFFFFF"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/down_arrow" />
+                app:srcCompat="@drawable/expand_more" />
 
             <TextView
                 android:id="@+id/item_meet_name"
-                android:layout_width="wrap_content"
+                android:layout_width="182dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
                 android:gravity="center"
                 android:text="Reuniao Exemplo"
                 android:textSize="24sp"
@@ -55,15 +56,37 @@
 
             <TextView
                 android:id="@+id/item_meet_room_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:autoText="false"
                 android:gravity="center"
-                android:text="Sala 10"
+                android:text="Sala Yamaha"
                 android:textSize="18sp"
                 android:textStyle="bold|italic"
-                app:layout_constraintEnd_toStartOf="@+id/item_meet_floor"
+                app:layout_constraintEnd_toStartOf="@+id/div"
+                app:layout_constraintStart_toStartOf="@+id/item_meet_name"
+                app:layout_constraintTop_toBottomOf="@+id/item_meet_name" />
+
+            <View
+                android:id="@+id/div"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/item_meet_expandable"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.33"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/item_meet_name" />
+
+            <View
+                android:id="@+id/item_meet_div"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@color/colorAccent"
+                app:layout_constraintEnd_toStartOf="@+id/item_meet_expand_button"
                 app:layout_constraintStart_toStartOf="@+id/item_meet_name"
                 app:layout_constraintTop_toBottomOf="@+id/item_meet_name" />
 
@@ -76,7 +99,7 @@
                 android:text="5o Andar"
                 android:textSize="18sp"
                 android:textStyle="italic"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/item_meet_room_name"
                 app:layout_constraintEnd_toEndOf="@+id/item_meet_name"
                 app:layout_constraintTop_toBottomOf="@+id/item_meet_name"
@@ -87,10 +110,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
                 android:text="05/10/2002"
                 app:layout_constraintBottom_toBottomOf="@+id/item_meet_name"
-                app:layout_constraintEnd_toStartOf="@+id/imageButton"
-                app:layout_constraintStart_toEndOf="@+id/item_meet_name"
+                app:layout_constraintEnd_toStartOf="@+id/item_meet_expand_button"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0" />
 
@@ -98,8 +122,8 @@
                 android:id="@+id/item_meet_time_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="68dp"
-                android:layout_marginRight="68dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:gravity="center"
                 android:text="15:30"
                 android:textAllCaps="false"
@@ -107,7 +131,8 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/item_meet_time_end"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/item_meet_name"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/item_meet_date"
                 app:layout_constraintTop_toTopOf="@+id/item_meet_time_end" />
 
             <TextView
@@ -119,139 +144,145 @@
                 android:text="17:30"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@+id/item_meet_room_name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.508"
+                app:layout_constraintEnd_toEndOf="@+id/item_meet_expand_button"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/item_meet_time_start"
                 app:layout_constraintTop_toBottomOf="@+id/item_meet_date"
                 app:layout_constraintVertical_bias="1.0" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView3"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/item_meet_expandable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/item_meet_room_name"
+                app:layout_goneMarginBottom="8dp"
+                app:layout_goneMarginTop="8dp"
                 tools:visibility="visible">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <View
+                    android:id="@+id/item_meet_expandable_div"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/item_meet_booker"
+                    android:layout_width="190dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:text="Autor: Pedro Marangon"
+                    android:textSize="18sp"
+                    android:textStyle="italic"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/item_meet_desc_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="24dp"
+                    android:gravity="center"
+                    android:text="Detalhes: "
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/item_meet_booker" />
+
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/item_meet_subscroll"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="100dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/item_meet_desc_title">
 
-                    <View
-                        android:id="@+id/view"
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
-                        android:background="@android:color/darker_gray"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/item_meet_booker"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center"
-                        android:text="Pedro Marangon"
-                        android:textSize="18sp"
-                        android:textStyle="italic"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ScrollView
-                        android:id="@+id/scrollView4"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/item_meet_booker">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/item_meet_desc"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:layout_marginStart="8dp"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginRight="0dp"
+                            android:text="  Lorem ipsum dolor sit amet, consectetur adipiscing elit. In accumsan eget nisl ac tincidunt. Quisque non enim in lorem posuere mattis. Nunc justo mi, vehicula eu sapien eget, placerat laoreet neque. Fusce fringilla scelerisque rhoncus. Donec auctor cursus tortor efficitur accumsan. Aliquam dignissim venenatis sapien, id facilisis neque rutrum sit amet. Aliquam interdum, massa eu convallis vehicula, tellus mauris venenatis mauris, vel tincidunt sem odio sit amet dui. Fusce rutrum arcu tellus, quis dignissim risus pellentesque eu. Morbi vel tellus vel ipsum aliquet fringilla. Pellentesque ullamcorper rhoncus feugiat. Curabitur dui lacus, dictum et diam vitae, congue tincidunt odio. Ut nec mi rutrum, suscipit leo ac, pellentesque ante. Duis porttitor molestie felis, eget ultricies augue malesuada sed. Quisque ullamcorper, ante eget tincidunt faucibus, mi libero vehicula urna, vitae ullamcorper leo massa a tellus. Cras eu dui metus."
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
 
-                            <TextView
-                                android:id="@+id/textView4"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:layout_marginLeft="0dp"
-                                android:layout_marginTop="0dp"
-                                android:layout_marginEnd="8dp"
-                                android:layout_marginRight="0dp"
-                                android:text="  Lorem ipsum dolor sit amet, consectetur adipiscing elit. In accumsan eget nisl ac tincidunt. Quisque non enim in lorem posuere mattis. Nunc justo mi, vehicula eu sapien eget, placerat laoreet neque. Fusce fringilla scelerisque rhoncus. Donec auctor cursus tortor efficitur accumsan. Aliquam dignissim venenatis sapien, id facilisis neque rutrum sit amet. Aliquam interdum, massa eu convallis vehicula, tellus mauris venenatis mauris, vel tincidunt sem odio sit amet dui. Fusce rutrum arcu tellus, quis dignissim risus pellentesque eu. Morbi vel tellus vel ipsum aliquet fringilla. Pellentesque ullamcorper rhoncus feugiat. Curabitur dui lacus, dictum et diam vitae, congue tincidunt odio. Ut nec mi rutrum, suscipit leo ac, pellentesque ante. Duis porttitor molestie felis, eget ultricies augue malesuada sed. Quisque ullamcorper, ante eget tincidunt faucibus, mi libero vehicula urna, vitae ullamcorper leo massa a tellus. Cras eu dui metus."
-                                android:textSize="14sp" />
-                        </LinearLayout>
-                    </ScrollView>
+                <View
+                    android:id="@+id/item_meet_div2"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginRight="32dp"
+                    android:background="@color/colorAccent"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/item_meet_subscroll" />
 
-                    <ImageButton
-                        android:id="@+id/imageButton3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
-                        android:background="#00FFFFFF"
-                        android:tint="@color/colorSecondaryDark"
-                        app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
-                        app:layout_constraintEnd_toStartOf="@+id/textView5"
-                        app:layout_constraintTop_toTopOf="@+id/imageButton2"
-                        app:srcCompat="@drawable/edit" />
+                <ImageButton
+                    android:id="@+id/item_meet_delete"
+                    android:layout_width="64dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="#00FFFFFF"
+                    android:scaleX="1.2"
+                    android:scaleY="1.2"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/item_meet_div2"
+                    app:layout_constraintStart_toStartOf="@+id/item_meet_div2"
+                    app:layout_constraintTop_toBottomOf="@+id/item_meet_div2"
+                    app:srcCompat="@drawable/delete" />
 
-                    <TextView
-                        android:id="@+id/textView5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="32dp"
-                        android:layout_marginRight="32dp"
-                        android:hint="Editar Reserva"
-                        app:layout_constraintBottom_toBottomOf="@+id/imageButton3"
-                        app:layout_constraintEnd_toStartOf="@+id/imageButton2" />
+                <Button
+                    android:id="@+id/item_meet_view_participantes"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:text="Ver participantes"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/item_meet_booker"
+                    app:layout_constraintEnd_toEndOf="@+id/item_meet_expandable_div"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/item_meet_booker"
+                    app:layout_constraintTop_toTopOf="@+id/item_meet_booker" />
 
-                    <ImageButton
-                        android:id="@+id/imageButton2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="#00FFFFFF"
-                        android:tint="@color/colorSecondaryDark"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/textView6"
-                        app:layout_constraintTop_toBottomOf="@+id/scrollView4"
-                        app:srcCompat="@drawable/delete" />
-
-                    <TextView
-                        android:id="@+id/textView6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
-                        android:hint="Apagar Reserva"
-                        app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

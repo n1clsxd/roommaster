@@ -45,7 +45,7 @@ public class LoginService extends AsyncTask<Void, Void, String> {
             return result.toString();
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(e);
+            //System.out.println(e);
             return null;
         }
     }

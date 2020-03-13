@@ -1,5 +1,6 @@
 package com.wise.roommaster.ui.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +39,7 @@ public class RoomListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View createdView = LayoutInflater.from(context).inflate(R.layout.item_room, parent, false);
+        @SuppressLint("ViewHolder") View createdView = LayoutInflater.from(context).inflate(R.layout.item_room, parent, false);
         Room room =  roomsList.get(position);
 
         showRoomName(createdView, room);
@@ -61,12 +62,12 @@ public class RoomListAdapter extends BaseAdapter {
     }
     private void showSeats(View createdView, Room room) {
         TextView roomSeats = createdView.findViewById(R.id.item_room_seats);
-        roomSeats.setText(room.getSeats() + " assentos");
+        roomSeats.setText((room.getSeats() + " assentos"));
     }
 
     private void showArea(View createdView, Room room) {
         TextView roomArea = createdView.findViewById(R.id.item_room_size);
-        roomArea.setText(room.getArea() + " m²");
+        roomArea.setText((room.getArea() + " m²"));
     }
     private void showHasMedia(View createdView, Room room) {
         ImageView roomHasMedia = createdView.findViewById(R.id.item_room_media);

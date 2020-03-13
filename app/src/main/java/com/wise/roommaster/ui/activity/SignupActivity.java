@@ -1,7 +1,9 @@
 package com.wise.roommaster.ui.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,16 +25,23 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Objects;
 public class SignupActivity extends AppCompatActivity {
     List<Company> companyList = new ArrayList<>();
     List<String> companyNameList= new ArrayList<>();
+    String resulte;
     int selectCompanyId = 1;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Objects.requireNonNull(getSupportActionBar()).hide();
+        }
+
+
         setContentView(R.layout.activity_start_signup);
         final EditText nameEdt = findViewById(R.id.signup_username_field);
         final EditText emailEdt = findViewById(R.id.signup_email_field);
@@ -53,9 +62,13 @@ public class SignupActivity extends AppCompatActivity {
         emailEdt.setOnFocusChangeListener((new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+
                 if(!hasFocus){
                     String emailAfterTextChange = emailEdt.getText().toString();
-                    if(emailAfterTextChange.contains("@")){
+                    if(!Patterns.EMAIL_ADDRESS.matcher(emailEdt.getText().toString()).matches()){
+                        emailEdt.setError("Email inválido.");
+                    }
+                    if(emailAfterTextChange.contains("@") && chkPassword(emailEdt.getText().toString())){
                         String[] emailFull = emailAfterTextChange.split("@");
                         if(emailFull.length > 1){
                             String domain = emailFull[1];
@@ -63,16 +76,17 @@ public class SignupActivity extends AppCompatActivity {
                             if(domain.contains(".")){
                                 System.out.println("dominio: " + domain);
                                 try{
-                                    String resulte = new CheckDomainService(domain).execute().get();
-                                    int[] companyId;
+                                    resulte = new CheckDomainService(domain).execute().get();
+                                    //Integer[] companyId;
                                     JSONArray resultJson = new JSONArray(resulte);
 
-                                    String[] companyName;
+                                    //String[] companyName;
                                     if(resultJson.length()>0){
 
-                                        companyId = new int[resultJson.length()];
-                                        companyName = new String[resultJson.length()];
+                                        //companyId = new Integer[resultJson.length()];
+                                        //companyName = new String[resultJson.length()];
                                         companyList.clear();
+                                        companyNameList.clear();
                                         for(int i = 0;i < resultJson.length(); i++){
                                             JSONObject obj = resultJson.getJSONObject(i);
                                             if(obj.has("id")&&obj.has("nome")&&obj.has("tipoOrganizacao")){
@@ -80,15 +94,16 @@ public class SignupActivity extends AppCompatActivity {
                                                 String name = obj.getString("nome");
                                                 String type = obj.getString("tipoOrganizacao");
                                                 Company company = new Company();
-                                                System.out.println(companyId[i]);
+                                                //System.out.println(companyId[i]);
                                                 company.setId(id);
                                                 company.setName(name);
                                                 company.setCompanyType(type);
-
+                                                
                                                 companyList.add(company);
+
                                                 companyNameList.add(company.getName()+" - "+company.getCompanyType());
                                             }
-                                            System.out.println("id da empresa:" + companyId[i]);
+                                            //System.out.println("id da empresa:" + companyId[i]);
 
                                         }
                                         ArrayAdapter<String> adapter = new ArrayAdapter<>(SignupActivity.this, android.R.layout.simple_spinner_item, companyNameList);
@@ -103,6 +118,9 @@ public class SignupActivity extends AppCompatActivity {
                                 }catch(Exception e){
                                     e.printStackTrace();
                                 }
+                                if(resulte.equals("[]")){
+                                    emailEdt.setError("Domínio não cadastrado.");
+                                }
 
                                 //do stuff -> check domain
                                 //         -> check companyId
@@ -115,6 +133,16 @@ public class SignupActivity extends AppCompatActivity {
                 }
             }
         }));
+        passwordEdt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    if(!chkPassword(passwordEdt.getText().toString())){
+                        passwordEdt.setError("A senha deve ter ao menos 6 caracteres.");
+                    }
+                }
+            }
+        });
 
 
         Button SignupBtn = findViewById(R.id.signup_signup_button);
@@ -148,6 +176,15 @@ public class SignupActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private boolean chkPassword(String password){
+        System.out.println("Tamanho certo: " + (password.length()>5));
+        //boolean valido;
+
+        //System.out.println("Caracteres certos: " + (matcher.matches()));
+        return (password.length()>5);
+
     }
 
 }

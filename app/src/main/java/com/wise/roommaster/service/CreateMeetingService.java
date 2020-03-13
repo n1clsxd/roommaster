@@ -3,7 +3,6 @@ package com.wise.roommaster.service;
 import android.os.AsyncTask;
 import android.util.Base64;
 
-import com.wise.roommaster.model.Meeting;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,7 +14,6 @@ import java.net.URL;
 import java.util.Date;
 
 public class CreateMeetingService extends AsyncTask<Void, Void, String> {
-    private int id;
     private int roomId;
     private int userId;
     private String description;
@@ -31,10 +29,6 @@ public class CreateMeetingService extends AsyncTask<Void, Void, String> {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
     }
-    public CreateMeetingService(Meeting meeting){
-
-    }
-
     @Override
     protected String doInBackground(Void... voids) {
         String urlWS = "http://172.30.248.126:8080/ReservaDeSala/rest/reserva/cadastrar";

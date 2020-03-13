@@ -3,7 +3,6 @@ package com.wise.roommaster.service;
 import android.os.AsyncTask;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -12,13 +11,8 @@ import java.net.URL;
 
 public class GetMeetingListService extends AsyncTask<Void, Void, String> {
     private int companyId;
-    private int userId;
     public GetMeetingListService(int companyId){
         this.companyId = companyId;
-    }
-    public GetMeetingListService(int companyId, int userId){
-        this.companyId = companyId;
-        this.userId = userId;
     }
 
     @Override

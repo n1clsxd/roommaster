@@ -67,8 +67,8 @@ public class GetRoomListService extends AsyncTask<Void, Void, String> {
                     }
                 }
 
-                System.out.println("return caso com roomId: " + resultJson.toString());
-                return resultJson.toString();
+                System.out.println("return caso com roomId: " + (resultJson != null ? resultJson.toString() : null));
+                return resultJson != null ? resultJson.toString() : null;
             }
 
 

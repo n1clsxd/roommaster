@@ -1,8 +1,13 @@
 package com.wise.roommaster.ui.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -26,12 +31,12 @@ import com.wise.roommaster.service.CreateMeetingService;
 import com.wise.roommaster.ui.adapter.RoomListAdapter;
 import com.wise.roommaster.util.Globals;
 
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class CreateMeetingActivity extends AppCompatActivity {
     FrameLayout cm_layout;
@@ -55,11 +60,9 @@ public class CreateMeetingActivity extends AppCompatActivity {
     Button confirmMeetingBtn;
     //////////////////
     public int selectedRoomId;
-    public Date selectedDate;
+
     public Date selectedStartDate;
     public Date selectedEndDate;
-    public long selectedStartTime;
-    public long selectedEndTime;
     public String selectedMeetName;
     public int selectedYear;
     public int selectedMonth;
@@ -68,7 +71,8 @@ public class CreateMeetingActivity extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //Toolbar toolbar = findViewById(R.id.create_meeting_toolbar);
+        //setSupportActionBar(toolbar);
 
 
 
@@ -77,7 +81,21 @@ public class CreateMeetingActivity extends AppCompatActivity {
         cm_main = findViewById(R.id.create_meeting_main);
         cm_room_list = findViewById(R.id.create_meeting_room_list);
         cm_calendar = findViewById(R.id.create_meeting_calendar);
+        confirmMeetingBtn = findViewById(R.id.create_meeting_confirm);
+        System.out.println("hmmmmmmmmmmmmmmmmmmmmmmmmmmmm" +(confirmMeetingBtn == null));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.close);
+            Objects.requireNonNull(getSupportActionBar()).setTitle("Nova Reserva");
+            confirmMeetingBtn.setVisibility(View.GONE);
+        }else{
 
+            confirmMeetingBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    createMeeting();
+                }
+            });
+        }
         setViewAuto(cm_layout, cm_main);
         nameField = findViewById(R.id.create_meeting_name_field);
         descriptionField = findViewById(R.id.create_meeting_description_field);
@@ -109,54 +127,54 @@ public class CreateMeetingActivity extends AppCompatActivity {
                 configDate();
             }
         });
-        confirmMeetingBtn = findViewById(R.id.create_meeting_confirm);
+
         nameField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 selectedMeetName = nameField.getText().toString();
             }
         });
-        confirmMeetingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
+    }
 
-                String result;
-                try {
-                    if(!selectedMeetName.equals("")){
-                        if(selectedRoomId != 0){
-                            if(selectedStartDate != null && selectedEndDate != null){
+    public void createMeeting() {
+        String result;
+        try {
+            if(!selectedMeetName.equals("")){
+                if(selectedRoomId != 0){
+                    if(selectedStartDate != null && selectedEndDate != null){
 
-                                result = new CreateMeetingService(
-                                        selectedRoomId,
-                                        Globals.userId,//pref.getInt("userId",-1),
-                                        selectedMeetName,
-                                        selectedStartDate,
-                                        selectedEndDate
-                                ).execute().get();
-                                System.out.println("tentativa de criar reserva deu certo: " + result);
-                                ActivityCompat.finishAffinity(CreateMeetingActivity.this);
-                                startActivity(new Intent(CreateMeetingActivity.this, MainActivity.class));
-                            }else{
-                                System.out.println("falta a data");
-                            }
-                        }else{
-                            System.out.println("falta a sala");
-                        }
+                        result = new CreateMeetingService(
+                                selectedRoomId,
+                                Globals.userId,//pref.getInt("userId",-1),
+                                selectedMeetName,
+                                selectedStartDate,
+                                selectedEndDate
+                        ).execute().get();
+                        System.out.println("tentativa de criar reserva deu certo: " + result);
+                        ActivityCompat.finishAffinity(CreateMeetingActivity.this);
+                        startActivity(new Intent(CreateMeetingActivity.this, MainActivity.class));
                     }else{
-                        System.out.println("falta o nome");
+                        System.out.println("falta a data");
                     }
-                } catch (Exception e) {
-                    System.out.println("tentativa de criar reserva deu esse erro: " + e);
-                    e.printStackTrace();
+                }else{
+                    System.out.println("falta a sala");
                 }
-
+            }else{
+                System.out.println("falta o nome");
             }
-        });
+        } catch (Exception e) {
+            System.out.println("tentativa de criar reserva deu esse erro: " + e);
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onBackPressed() {
+        returnToMain();
+    }
+
+    public void returnToMain() {
         if(cm_main.getVisibility() == View.VISIBLE){
             finish();
 
@@ -166,6 +184,43 @@ public class CreateMeetingActivity extends AppCompatActivity {
 
             setViewAuto(cm_layout, cm_main);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_create_meeting_activity, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_create:
+                createMeeting();
+                break;
+            case R.id.action_return:
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.setTitle("Delete");
+                alert.setMessage("Deseja cancelar a a criação da reserva?");
+                alert.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        returnToMain();
+                        dialog.dismiss();
+                    }
+                });
+                alert.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alert.show();
+                break;
+        }
+        return true;
     }
 
     public void setViewAuto(FrameLayout frameLayout, ViewGroup viewGroup){

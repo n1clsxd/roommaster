@@ -11,11 +11,11 @@ import java.util.List;
 
 public class MeetingDAO {
     //private final CompanyUserDAO companyUserDAO = new CompanyUserDAO();
-    public final static List<Meeting> meetings = new ArrayList<>();
+    private final static List<Meeting> meetings = new ArrayList<>();
     public void updateMeetingList(int companyId) {
         System.out.println("tentando get byidcompanhia usando: " + companyId);
 
-        JSONArray meetingResultJson = null;
+        JSONArray meetingResultJson;
         try{
             String meetingResult = new GetMeetingListService(companyId).execute().get();
             System.out.println("Resultados: " +meetingResult);
